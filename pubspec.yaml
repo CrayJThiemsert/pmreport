@@ -30,6 +30,7 @@ dependencies:
   firebase_core: ^0.4.5         # Firebase Core API which enable connecting multiple Firebase apps.
   google_sign_in: ^4.5.1        # For Google Sign In
   firebase_auth: ^0.16.1        # Use Firebase Authentication API
+  cloud_firestore: ^0.12.9+5    # Use Firebase Cloud Firestore
   rxdart: ^0.24.1               # Additional use Dart Streams and StreamControllers
   font_awesome_flutter: ^8.8.1  # font icon pack
   uuid: ^2.2.0
@@ -38,6 +39,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
+
+  user_repository:
+    path: packages/user_repository
+
 
 dev_dependencies:
   flutter_test:

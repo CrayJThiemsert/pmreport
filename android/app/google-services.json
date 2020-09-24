@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "77510339426",
+    "firebase_url": "https://pmreport-79ebb.firebaseio.com",
+    "project_id": "pmreport-79ebb",
+    "storage_bucket": "pmreport-79ebb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77510339426:android:cbf96c866998ea8c441a3b",
+        "android_client_info": {
+          "package_name": "com.cray.pmreport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77510339426-r1ls3htmo4t51su8clvbe2ivs07ducnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtN17_qA61HLG_U-MYNem2v_aKSZRThJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77510339426-r1ls3htmo4t51su8clvbe2ivs07ducnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

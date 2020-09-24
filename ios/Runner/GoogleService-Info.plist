@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>77510339426-ata9vmr11c4sdrj59c4tkfbbp35epj95.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.77510339426-ata9vmr11c4sdrj59c4tkfbbp35epj95</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAwcCqaBiinGJDs42lsQJgETq_LIw0sd_U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>77510339426</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cray.pmreport</string>
+	<key>PROJECT_ID</key>
+	<string>pmreport-79ebb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pmreport-79ebb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:77510339426:ios:82b353cfbdb526e5441a3b</string>
+	<key>DATABASE_URL</key>
+	<string>https://pmreport-79ebb.firebaseio.com</string>
+</dict>
+</plist>
