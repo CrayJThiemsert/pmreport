@@ -1,0 +1,28 @@
+name: authentication_repository
+description: Dart package which manages the authentication domain.
+version: 1.0.0
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^1.2.5
+  meta: ^1.1.8
+  test_api: ^0.2.17
+  uuid: ^2.2.0
+
+  bloc: ^6.0.3
+  flutter_bloc: ^6.0.5
+
+  firebase_core: ^0.5.0         # Firebase Core API which enable connecting multiple Firebase apps.
+  google_sign_in: ^4.5.1        # For Google Sign In
+  firebase_auth: ^0.18.0+1        # Use Firebase Authentication API
+#  rxdart: ^0.24.1               # Additional use Dart Streams and StreamControllers
+#  font_awesome_flutter: ^8.8.1  # font icon pack
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^4.1.1
