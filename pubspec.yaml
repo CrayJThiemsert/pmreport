@@ -50,6 +50,9 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
 
+  preventive_maintenance_repository:
+    path: packages/preventive_maintenance_repository
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

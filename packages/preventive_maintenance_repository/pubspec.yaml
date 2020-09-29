@@ -1,0 +1,20 @@
+name: preventive_maintenance_repository
+description: Dart package which manages the authentication domain.
+version: 1.0.0
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^1.2.5
+  firebase_core: ^0.5.0         # Firebase Core API which enable connecting multiple Firebase apps.
+  cloud_firestore: ^0.14.0+2    # Use Firebase Cloud Firestore
+  rxdart: ^0.24.1               # Additional use Dart Streams and StreamControllers
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^4.1.1

@@ -133,7 +133,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.5"
   csslib:
     dependency: transitive
     description:
@@ -485,6 +485,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
+  preventive_maintenance_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/preventive_maintenance_repository"
+      relative: true
+    source: path
+    version: "1.0.0"
   process:
     dependency: transitive
     description:
