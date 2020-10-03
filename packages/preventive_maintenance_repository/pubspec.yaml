@@ -1,5 +1,5 @@
 name: preventive_maintenance_repository
-description: Dart package which manages the authentication domain.
+description: Dart package which manages the blocs.authentication domain.
 version: 1.0.0
 
 environment:

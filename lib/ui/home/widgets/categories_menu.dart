@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/blocs.dart';
-import 'package:pmreport/home/widgets/loading_indicator.dart';
+import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 
 class CategoriesMenu extends StatelessWidget {
   CategoriesMenu({Key key}) : super(key: key);

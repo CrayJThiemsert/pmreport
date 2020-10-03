@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:pmreport/authentication/authentication.dart';
+import 'package:pmreport/blocs/authentication/authentication.dart';
 import 'package:pmreport/blocs/categories/categories_bloc.dart';
-import 'package:pmreport/home/home.dart';
-import 'package:pmreport/login/login.dart';
-import 'package:pmreport/splash/splash.dart';
-import 'package:pmreport/theme.dart';
+import 'package:pmreport/ui/home/home.dart';
+import 'package:pmreport/ui/login/login.dart';
+import 'package:pmreport/ui/splash/splash.dart';
+import 'package:pmreport/ui/theme.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 class App extends StatelessWidget {

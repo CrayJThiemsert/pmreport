@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:pmreport/simple_bloc_observer.dart';
+import 'package:pmreport/blocs/simple_bloc_observer.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:pmreport/app.dart';
 

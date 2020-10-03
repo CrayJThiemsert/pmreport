@@ -9,7 +9,7 @@ import 'models/models.dart' as model;
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
 
-/// Thrown during the login process if a failure occurs.
+/// Thrown during the ui.login process if a failure occurs.
 class LogInWithEmailAndPasswordFailure implements Exception {}
 
 /// Thrown during the sign in with google process if a failure occurs.
@@ -19,7 +19,7 @@ class LogInWithGoogleFailure implements Exception {}
 class LogOutFailure implements Exception {}
 
 /// {@template authentication_repository}
-/// Repository which manages user authentication.
+/// Repository which manages user blocs.authentication.
 /// {@endtemplate}
 class AuthenticationRepository {
   /// {@macro authentication_repository}
@@ -33,7 +33,7 @@ class AuthenticationRepository {
   final GoogleSignIn _googleSignIn;
 
   /// Stream of [User] which will emit the current user when
-  /// the authentication state changes.
+  /// the blocs.authentication state changes.
   ///
   /// Emits [User.empty] if the user is not authenticated.
   Stream<model.User> get user {

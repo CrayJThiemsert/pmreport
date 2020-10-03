@@ -32,7 +32,7 @@ dependencies:
   cloud_firestore: ^0.14.0+2    # Use Firebase Cloud Firestore
   firebase_core: ^0.5.0         # Firebase Core API which enable connecting multiple Firebase apps.
 
-  google_sign_in: ^4.5.1        # For Google Sign In
+#  google_sign_in: ^4.5.1        # For Google Sign In
 
 
   rxdart: ^0.24.1               # Additional use Dart Streams and StreamControllers

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pmreport/authentication/authentication.dart';
-import 'package:pmreport/home/home.dart';
-import 'package:pmreport/home/widgets/categories_menu.dart';
+import 'package:pmreport/blocs/authentication/authentication.dart';
+import 'package:pmreport/ui/home/home.dart';
+import 'package:pmreport/ui/home/widgets/categories_menu.dart';
 
 class HomePage extends StatelessWidget {
   static Route route() {
