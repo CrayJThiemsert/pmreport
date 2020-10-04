@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pmreport/blocs/simple_bloc_observer.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:pmreport/app.dart';
+import 'package:pmreport/ui/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,7 @@ void main() async {
 
   Bloc.observer = SimpleBlocObserver();
   runApp(App(authenticationRepository: AuthenticationRepository()));
+
 }
 
 

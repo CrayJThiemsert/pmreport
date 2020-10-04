@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/authentication/authentication.dart';
 import 'package:pmreport/ui/home/home.dart';
 import 'package:pmreport/ui/home/widgets/categories_menu.dart';
+import 'package:pmreport/ui/home/widgets/home_menu.dart';
 
 class HomePage extends StatelessWidget {
   static Route route() {
@@ -26,7 +27,8 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: CategoriesMenu(),
+      body: HomeMenu(),
+      // body: CategoriesMenu(),
       // body: Align(
       //   alignment: const Alignment(0, -1 / 3),
       //   child: Column(
