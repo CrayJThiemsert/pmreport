@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pmreport/app.dart';
+import 'package:pmreport/ui/navigator/app.dart';
 
 import 'package:pmreport/main.dart';
 

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/authentication/authentication.dart';
-import 'package:pmreport/ui/home/home.dart';
-import 'package:pmreport/ui/home/widgets/categories_menu.dart';
 import 'package:pmreport/ui/home/widgets/home_menu.dart';
 
-class HomePage extends StatelessWidget {
+class CategoryPage extends StatelessWidget {
+  String uid;
+
+  CategoryPage({this.uid});
+
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => HomePage());
+    return MaterialPageRoute<void>(builder: (_) => CategoryPage());
   }
 
   @override
@@ -16,7 +18,7 @@ class HomePage extends StatelessWidget {
     final user = context.bloc<AuthenticationBloc>().state.user;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Category'),
         actions: <Widget>[
           IconButton(
             key: const Key('homePage_logout_iconButton'),

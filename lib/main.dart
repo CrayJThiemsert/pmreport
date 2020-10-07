@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pmreport/blocs/simple_bloc_observer.dart';
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:pmreport/app.dart';
+import 'package:pmreport/ui/navigator/app.dart';
 import 'package:pmreport/ui/home/home.dart';
 
 void main() async {
@@ -16,6 +16,8 @@ void main() async {
 
   Bloc.observer = SimpleBlocObserver();
   runApp(App(authenticationRepository: AuthenticationRepository()));
+
+  // runApp(AppView());
 
 }
 
