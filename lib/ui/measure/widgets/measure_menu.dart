@@ -46,7 +46,32 @@ class MeasureMenu extends StatelessWidget {
             children: [
               Bounce(
                 duration: Duration(milliseconds: 100),
-                child: ToffeeButton('assets/report_menu_normal.png', 'Back'),
+                // child: ToffeeButton('assets/report_menu_normal.png', 'Back'),
+                child: Container(
+                  // color: Colors.yellowAccent,
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.brown,
+                        ),
+                      ),
+                      Text('Back',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 onPressed: () {
                   print('Report pressed...');
                   Navigator.pop(context);

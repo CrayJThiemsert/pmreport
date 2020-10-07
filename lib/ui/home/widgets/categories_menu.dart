@@ -25,53 +25,54 @@ class CategoriesMenu extends StatelessWidget {
           return Container(
             height: displayHeight(context) * 0.15,
             width: displayWidth(context),
-            child: Expanded(
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return Bounce(
-                    duration: Duration(milliseconds: 100),
-                    child: Image.asset(
-                      'assets/measurement_menu_normal.png',
-                      fit: BoxFit.fill,
-                    ),
-                    onPressed: () {
-                      print('${categories[index].name} pressed...');
-                    },
-                  );
-                },
-                autoplay: false,
-                itemCount: categories.length,
-                pagination: new SwiperPagination(
-                    margin: new EdgeInsets.all(0.0),
-                    builder: new SwiperCustomPagination(builder:
-                        (BuildContext context, SwiperPluginConfig config) {
-                      return new ConstrainedBox(
-                        child: new Row(
-                          children: <Widget>[
-                            new Text(
+            child: Swiper(
+              itemBuilder: (BuildContext context, int index) {
+                return Bounce(
+                  duration: Duration(milliseconds: 100),
+                  child: Image.asset(
+                    'assets/${categories[index].uid}_h96.png',
+                    fit: BoxFit.fitHeight,
+                  ),
+                  onPressed: () {
+                    print('${categories[index].name} pressed...');
+                  },
+                );
+              },
+              autoplay: false,
+              itemCount: categories.length,
+              pagination: new SwiperPagination(
+                  margin: new EdgeInsets.all(0.0),
+                  builder: new SwiperCustomPagination(builder:
+                      (BuildContext context, SwiperPluginConfig config) {
+                    return new ConstrainedBox(
+                      child: new Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: new Text(
                               "${categories[config.activeIndex].name} ${config.activeIndex + 1}/${config.itemCount}",
                               style: TextStyle(fontSize: 20.0),
                             ),
-                            new Expanded(
-                              child: new Align(
-                                alignment: Alignment.centerRight,
-                                child: new DotSwiperPaginationBuilder(
-                                    color: Colors.black12,
-                                    activeColor: Colors.black,
-                                    size: 10.0,
-                                    activeSize: 20.0)
-                                    .build(context, config),
-                              ),
-                            )
-                          ],
-                        ),
-                        constraints: new BoxConstraints.expand(height: 50.0),
-                      );
-                    }
-                    )
-                ),
-                control: new SwiperControl(color: Colors.redAccent),
+                          ),
+                          new Expanded(
+                            child: new Align(
+                              alignment: Alignment.centerRight,
+                              child: new DotSwiperPaginationBuilder(
+                                  color: Colors.black12,
+                                  activeColor: Colors.black,
+                                  size: 10.0,
+                                  activeSize: 20.0)
+                                  .build(context, config),
+                            ),
+                          )
+                        ],
+                      ),
+                      constraints: new BoxConstraints.expand(height: 50.0),
+                    );
+                  }
+                  )
               ),
+              control: new SwiperControl(color: Colors.redAccent),
             ),
           );
           // return Container(
