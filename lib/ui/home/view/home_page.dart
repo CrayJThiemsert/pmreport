@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/authentication/authentication.dart';
+import 'package:pmreport/blocs/categories/categories.dart';
 import 'package:pmreport/ui/home/home.dart';
-import 'package:pmreport/ui/home/widgets/categories_menu.dart';
+import 'package:pmreport/ui/measure/widgets/categories_menu.dart';
 import 'package:pmreport/ui/home/widgets/home_menu.dart';
+import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 class HomePage extends StatelessWidget {
   static Route route() {
@@ -27,7 +29,35 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: HomeMenu(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<CategoriesBloc>(
+              create: (context) {
+                return CategoriesBloc(
+                  categoriesRepository: FirebaseCategoriesRepository(),
+                )..add(LoadCategories());
+              },
+
+            ),
+          ],
+          child: HomeMenu(),
+        ),
+      ),
+
+      // body: BlocProvider<CategoriesBloc>(
+      //     builder: (context, state) {
+      //       HomeMenu();
+      //     }
+      //     create: (context) {
+      //       return CategoriesBloc(
+      //         categoriesRepository: FirebaseCategoriesRepository(),
+      //       )..add(LoadCategories());
+      //     },
+      //
+      //   ),
+      // HomeMenu(),
       // body: CategoriesMenu(),
 
 

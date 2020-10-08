@@ -43,7 +43,7 @@ class DeleteCategory extends CategoriesEvent {
   List<Object> get props => [category];
 
   @override
-  String toString() => 'DeleteCategory { ategory: $category }';
+  String toString() => 'DeleteCategory { category: $category }';
 }
 
 class ClearCompleted extends CategoriesEvent {}

@@ -23,18 +23,32 @@ class CategoriesMenu extends StatelessWidget {
         } else if(state is CategoriesLoaded) {
           final categories = state.categories;
           return Container(
-            height: displayHeight(context) * 0.15,
+            height: displayHeight(context) * 0.22,
             width: displayWidth(context),
+            // color: Colors.blueAccent,
             child: Swiper(
               itemBuilder: (BuildContext context, int index) {
                 return Bounce(
                   duration: Duration(milliseconds: 100),
-                  child: Image.asset(
-                    'assets/${categories[index].uid}_h96.png',
-                    fit: BoxFit.fitHeight,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/${categories[index].uid}_h96.png',
+                        fit: BoxFit.fitHeight,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0,),
+                        child: new Text(
+                          "${categories[index].name}",
+                          style: TextStyle(fontSize: 20.0, color: Colors.brown),
+                        ),
+                      ),
+                    ],
                   ),
                   onPressed: () {
-                    print('${categories[index].name} pressed...');
+                    String uri = '/category/${categories[index].uid}';
+                    print('${uri} pressed...');
+                    Navigator.pushNamed(context, uri);
                   },
                 );
               },
@@ -44,31 +58,32 @@ class CategoriesMenu extends StatelessWidget {
                   margin: new EdgeInsets.all(0.0),
                   builder: new SwiperCustomPagination(builder:
                       (BuildContext context, SwiperPluginConfig config) {
-                    return new ConstrainedBox(
-                      child: new Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: new Text(
-                              "${categories[config.activeIndex].name} ${config.activeIndex + 1}/${config.itemCount}",
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                          ),
-                          new Expanded(
-                            child: new Align(
-                              alignment: Alignment.centerRight,
-                              child: new DotSwiperPaginationBuilder(
+                    // return new ConstrainedBox(
+                    //   child: new Row(
+                    //     children: <Widget>[
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 16),
+                          //   child: new Text(
+                          //     "${categories[config.activeIndex].name} ${config.activeIndex + 1}/${config.itemCount}",
+                          //     style: TextStyle(fontSize: 20.0),
+                          //   ),
+                          // ),
+                          // new Expanded(
+                          //   child: new Align(
+                          //     alignment: Alignment.bottomCenter,
+                          //     child: new
+                        return      DotSwiperPaginationBuilder(
                                   color: Colors.black12,
-                                  activeColor: Colors.black,
-                                  size: 10.0,
-                                  activeSize: 20.0)
-                                  .build(context, config),
-                            ),
-                          )
-                        ],
-                      ),
-                      constraints: new BoxConstraints.expand(height: 50.0),
-                    );
+                                  activeColor: Colors.brown,
+                                  size: 5.0,
+                                  activeSize: 10.0)
+                                   .build(context, config);
+                             // );
+                          // )
+                        // ],
+                      // ),
+                      // constraints: new BoxConstraints.expand(height: 30.0),
+                    // );
                   }
                   )
               ),

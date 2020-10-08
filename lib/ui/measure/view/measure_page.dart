@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/authentication/authentication.dart';
+import 'package:pmreport/blocs/categories/categories.dart';
 import 'package:pmreport/ui/home/widgets/home_menu.dart';
+import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 import 'package:pmreport/ui/measure/widgets/measure_menu.dart';
+import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 class MeasurePage extends StatelessWidget {
   static Route route() {
@@ -13,6 +16,7 @@ class MeasurePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final user = context.bloc<AuthenticationBloc>().state.user;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Measure'),
@@ -26,8 +30,50 @@ class MeasurePage extends StatelessWidget {
           )
         ],
       ),
-      body: MeasureMenu(),
-      // body: CategoriesMenu(),
+
+      // short but error version ----------------
+      // body: Padding(
+      //   padding: const EdgeInsets.all(8.0),
+      //   child: MeasureMenu(),
+      // ),
+      // body: BlocBuilder<CategoriesBloc, CategoriesState>(
+      //     builder: (context, state) {
+      //       if(state is CategoriesLoading) {
+      //         return LoadingIndicator();
+      //       } else if(state is CategoriesNotLoaded) {
+      //         return Container(
+      //           child: Text('Data not found'),
+      //         );
+      //       } else if(state is CategoriesLoaded) {
+      //         return Padding(
+      //               padding: const EdgeInsets.all(8.0),
+      //               child: MeasureMenu(),
+      //             );
+      //       }
+      //     },
+      //   ),
+
+
+      // stable version ===================
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<CategoriesBloc>(
+              create: (context) {
+                print('************ call load category ***********');
+                return CategoriesBloc(
+                  categoriesRepository: FirebaseCategoriesRepository(),
+                )..add(LoadCategories());
+              },
+
+            ),
+          ],
+          child: MeasureMenu(),
+        ),
+      ),
+
+
 
 
       // body: Align(
