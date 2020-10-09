@@ -9,6 +9,7 @@ import 'package:pmreport/ui/category/view/category_page.dart';
 import 'package:pmreport/ui/home/home.dart';
 import 'package:pmreport/ui/login/login.dart';
 import 'package:pmreport/ui/measure/view/measure_page.dart';
+import 'package:pmreport/ui/part/view/part_page.dart';
 import 'package:pmreport/ui/report/view/report_page.dart';
 import 'package:pmreport/ui/splash/splash.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
@@ -140,11 +141,19 @@ class _AppViewState extends State<AppView> {
                 return MaterialPageRoute(builder: (context) => CategoryPage(categoryUid: uid, ));
               }
               break;
-            // case '/part':
-            //   {
-            //     return MaterialPageRoute(builder: (context) => PartPage(uid: uid));
-            //   }
-            //   break;
+          }
+        }
+
+        if(uri.pathSegments.length == 4) {
+          var path = uri.pathSegments[2];
+          var categoryUid = uri.pathSegments[1];
+          var partUid = uri.pathSegments[3];
+          switch (path) {
+            case 'part':
+              {
+                return MaterialPageRoute(builder: (context) => PartPage(categoryUid: categoryUid, partUid: partUid,));
+              }
+              break;
           }
         }
         return MaterialPageRoute(builder: (context) => UnknownScreen());

@@ -4,26 +4,28 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:pmreport/blocs/blocs.dart';
 import 'package:pmreport/blocs/parts/parts.dart';
+import 'package:pmreport/blocs/topics/topics_bloc.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 import 'package:pmreport/utils/sizes_helpers.dart';
 
-class PartsMenu extends StatelessWidget {
+class TopicsMenu extends StatelessWidget {
   String categoryUid;
-  PartsMenu({Key key, this.categoryUid}) : super(key: key);
+  String partUid;
+  TopicsMenu({Key key, this.categoryUid, this.partUid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PartsBloc, PartsState>(
+    return BlocBuilder<TopicsBloc, TopicsState>(
       builder: (context, state) {
 
-        if(state is PartsLoading) {
+        if(state is TopicsLoading) {
           return LoadingIndicator();
-        } else if(state is PartsNotLoaded) {
+        } else if(state is TopicsNotLoaded) {
           return Container(
             child: Text('Data not found'),
           );
-        } else if(state is PartsLoaded) {
-          final parts = state.parts;
+        } else if(state is TopicsLoaded) {
+          final topics = state.topics;
           return Container(
             height: displayHeight(context) * 0.22,
             width: displayWidth(context),
@@ -41,21 +43,19 @@ class PartsMenu extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 0,),
                         child: new Text(
-                          "${parts[index].name}",
+                          "${topics[index].name}",
                           style: TextStyle(fontSize: 20.0, color: Colors.brown),
                         ),
                       ),
                     ],
                   ),
                   onPressed: () {
-                    String uri = '/category/${categoryUid}/part/${parts[index].uid}';
-                    print('${uri} pressed...');
-                    Navigator.pushNamed(context, uri);
+                    print('${topics[index].name} pressed...');
                   },
                 );
               },
               autoplay: false,
-              itemCount: parts.length,
+              itemCount: topics.length,
               pagination: new SwiperPagination(
                   margin: new EdgeInsets.all(0.0),
                   builder: new SwiperCustomPagination(builder:

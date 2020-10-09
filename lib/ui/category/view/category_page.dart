@@ -41,7 +41,10 @@ class CategoryPage extends StatelessWidget {
                 String categoryName = getCategoryNameByUid(categories);
 
                 return buildPage(context, categoryName);
+              } else if(state is CategoriesLoading) {
+                return CircularProgressIndicator();
               }
+
             },
         ),
       ),
