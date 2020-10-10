@@ -6,15 +6,17 @@ class TopicEntity extends Equatable {
   final String uid;
   final int index;
   final String name;
+  final String header;
+  final String platform;
 
-  const TopicEntity(this.id, this.uid, this.index, this.name);
+  const TopicEntity(this.id, this.uid, this.index, this.name, this.header, this.platform);
 
   @override
-  List<Object> get props => [id, uid, index, name];
+  List<Object> get props => [id, uid, index, name, header, platform];
 
   @override
   String toString() {
-    return 'TopicEntity { id: $id, uid: $uid, index: $index, name: $name}';
+    return 'TopicEntity { id: $id, uid: $uid, index: $index, name: $name, header: $header, platform: $platform}';
   }
 
   Map<String, Object> toJson() {
@@ -23,6 +25,8 @@ class TopicEntity extends Equatable {
       "uid": uid,
       "index": index,
       "name": name,
+      "header": header,
+      "platform": platform,
     };
   }
 
@@ -32,6 +36,8 @@ class TopicEntity extends Equatable {
       json["uid"] as String,
       json["index"] as int,
       json["name"] as String,
+      json["header"] as String,
+      json["platform"] as String,
     );
   }
 
@@ -41,6 +47,8 @@ class TopicEntity extends Equatable {
       snap.data()['uid'] ?? '',
       snap.data()['index'] ?? '',
       snap.data()['name'] ?? '',
+      snap.data()['header'] ?? '',
+      snap.data()['platform'] ?? '',
     );
   }
 
@@ -50,6 +58,8 @@ class TopicEntity extends Equatable {
       "uid": uid,
       "idex": index,
       "name": name,
+      "header": header,
+      "platform": platform,
     };
   }
 }

@@ -12,6 +12,7 @@ import 'package:pmreport/ui/measure/view/measure_page.dart';
 import 'package:pmreport/ui/part/view/part_page.dart';
 import 'package:pmreport/ui/report/view/report_page.dart';
 import 'package:pmreport/ui/splash/splash.dart';
+import 'package:pmreport/ui/topic/view/topic_page.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 import '../theme.dart';
@@ -152,6 +153,21 @@ class _AppViewState extends State<AppView> {
             case 'part':
               {
                 return MaterialPageRoute(builder: (context) => PartPage(categoryUid: categoryUid, partUid: partUid,));
+              }
+              break;
+          }
+        }
+
+        if(uri.pathSegments.length == 6) {
+          var path = uri.pathSegments[4];
+          var categoryUid = uri.pathSegments[1];
+          var partUid = uri.pathSegments[3];
+          var topicUid = uri.pathSegments[5];
+          Topic topic = settings.arguments;
+          switch (path) {
+            case 'topic':
+              {
+                return MaterialPageRoute(builder: (context) => TopicPage(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid, topic: topic));
               }
               break;
           }
