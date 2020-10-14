@@ -25,7 +25,7 @@ class TopicMenu extends StatelessWidget {
     final user = context.bloc<CategoriesBloc>().state.categories;
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text('Items List',
           style: TextStyle(

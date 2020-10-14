@@ -1,22 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:preventive_maintenance_repository/src/entities/entities.dart';
 
-
-class ItemEntity extends Equatable {
+class HeaderEntity extends Equatable {
   final String id;
   final String uid;
   final int index;
   final String name;
+  final String inputType;
 
-  ItemEntity(this.id, this.uid, this.index, this.name);
+  const HeaderEntity(this.id, this.uid, this.index, this.name, this.inputType);
 
   @override
-  List<Object> get props => [id, uid, index, name];
+  List<Object> get props => [id, uid, index, name, inputType];
 
   @override
   String toString() {
-    return 'ItemEntity { id: $id, uid: $uid, index: $index, name: $name, }';
+    return 'HeaderEntity { id: $id, uid: $uid, index: $index, name: $name, inputType: $inputType}';
   }
 
   Map<String, Object> toJson() {
@@ -25,24 +24,27 @@ class ItemEntity extends Equatable {
       "uid": uid,
       "index": index,
       "name": name,
+      "inputType": inputType,
     };
   }
 
-  static ItemEntity fromJson(Map<String, Object> json) {
-    return ItemEntity(
+  static HeaderEntity fromJson(Map<String, Object> json) {
+    return HeaderEntity(
       json["id"] as String,
       json["uid"] as String,
       json["index"] as int,
       json["name"] as String,
+      json["inputType"] as String,
     );
   }
 
-  static ItemEntity fromSnapshot(DocumentSnapshot snap) {
-    return ItemEntity(
+  static HeaderEntity fromSnapshot(DocumentSnapshot snap) {
+    return HeaderEntity(
       snap.id ?? '',
       snap.data()['uid'] ?? '',
       snap.data()['index'] ?? '',
       snap.data()['name'] ?? '',
+      snap.data()['inputType'] ?? '',
     );
   }
 
@@ -52,6 +54,7 @@ class ItemEntity extends Equatable {
       "uid": uid,
       "idex": index,
       "name": name,
+      "inputType": inputType,
     };
   }
 }

@@ -17,7 +17,31 @@ class FirebaseCategoriesRepository implements CategoriesRepository {
   }
 
   @override
-  Stream<List<Category>> categories() {
+  Future<List<Category>> categoriesOnce() async {
+    // QuerySnapshot query = categoriesLoadCollection.get();
+    // FirebaseFirestore.instance
+    //     .collection('categories')
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) => {
+    //       querySnapshot.docs.forEach((doc) {
+    //         print(doc.data()['name']);
+    //       })
+    //     });
+    List<Category> categories;
+    await categoriesLoadCollection
+        .get()
+        .then((QuerySnapshot querySnapshot) => {
+          categories =
+          querySnapshot.docs
+          .map((doc) =>
+              Category.fromEntity(CategoryEntity.fromSnapshot(doc))).toList()
+
+        });
+    return categories;
+  }
+
+  @override
+  Stream<List<Category>> categoriesStream() {
     // FirebaseFirestore.instance
     //     .collection('categories')
     //     .get()

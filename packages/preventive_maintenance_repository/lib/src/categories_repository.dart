@@ -7,7 +7,9 @@ abstract class CategoriesRepository {
   
   Future<void> deleteCategory(Category category);
 
-  Stream<List<Category>> categories();
+  Stream<List<Category>> categoriesStream();
+
+  Future<List<Category>> categoriesOnce();
 
   Future<void> updateCategory(Category category);
 }

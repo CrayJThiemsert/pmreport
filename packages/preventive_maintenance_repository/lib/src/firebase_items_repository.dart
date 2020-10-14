@@ -21,13 +21,80 @@ class FirebaseItemsRepository implements ItemsRepository {
   }
 
   @override
-  Stream<List<Item>> items(String categoryUid, String partUid, Topic topic) {
+  Future<List<Item>> itemsOnce(String categoryUid, String partUid, Topic topic) async {
+    String query = 'templates/ui/sites/nachuak_solar_power_plant/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list';
+    if(topic.platform != 'mobile') {
+      query = 'templates/ui/topics/${topic.header}/items_list';
+    }
+    final itemsLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
+
+    List<Item> items;
+    await itemsLoadCollection
+        .get()
+        .then((QuerySnapshot querySnapshot) => {
+        items =
+          querySnapshot.docs
+              .map((doc) =>
+              Item.fromEntity(ItemEntity.fromSnapshot(doc))).toList()
+    });
+
+    query = '/templates/ui/topics/${topic.header}/headers';
+    final headersLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
+
+    List<Header> headers;
+    await headersLoadCollection
+        .get()
+        .then((QuerySnapshot querySnapshot) => {
+          headers =
+          querySnapshot.docs
+              .map((doc) =>
+              Header.fromEntity(HeaderEntity.fromSnapshot(doc))).toList()
+    });
+
+    // List<ItemData> itemDatas;
+    // items.forEach((item) async {
+    //   query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
+    //   final itemsDataLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
+    //   await itemsDataLoadCollection
+    //       .get()
+    //       .then((QuerySnapshot querySnapshot) => {
+    //     itemDatas =
+    //         querySnapshot.docs
+    //             .map((doc) =>
+    //             ItemData.fromEntity(ItemDataEntity.fromSnapshot(doc))).toList()
+    //   });
+    // });
+
+    for(var i = 0; i< items.length; i++) {
+      var item = items[i];
+      List<ItemData> itemDatas;
+      query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
+      final itemsDataLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
+      await itemsDataLoadCollection
+          .get()
+          .then((QuerySnapshot querySnapshot) => {
+        itemDatas =
+            querySnapshot.docs
+                .map((doc) =>
+                ItemData.fromEntity(ItemDataEntity.fromSnapshot(doc))).toList()
+      });
+      items[i].headers = headers;
+      items[i].itemDatas = itemDatas;
+    };
+    print('items size=$items.length');
+
+    return items;
+  }
+
+  @override
+  Stream<List<Item>> itemsStream(String categoryUid, String partUid, Topic topic) {
     String query = 'templates/ui/sites/nachuak_solar_power_plant/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list';
     if(topic.platform != 'mobile') {
       query = 'templates/ui/topics/${topic.header}/items_list';
     }
     final itemsLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
     // final itemsLoadCollection = FirebaseFirestore.instance.collection('templates/ui/topics/${topic.header}/items_list').orderBy('index', descending: false);
+
     return itemsLoadCollection.snapshots().map((snapshot) {
       return snapshot.docs
           .map((doc) => Item.fromEntity(ItemEntity.fromSnapshot(doc)))

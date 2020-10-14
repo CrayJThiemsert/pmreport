@@ -24,9 +24,8 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     ItemsEvent event,
   ) async* {
     if(event is LoadItems) {
-      yield* _mapLoadItemsToState(event);
-    // } if(event is LoadTemplateItems) {
-    //   yield* _mapLoadTemplateItemsToState(event);
+      // yield* _mapLoadItemsStreamToState(event);
+      yield* _mapLoadItemsOnceToState(event);
     } else if(event is AddItem) {
       yield* _mapAddItemToState(event);
     } else if(event is UpdateItem) {
@@ -40,19 +39,20 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     }
   }
 
-  Stream<ItemsState> _mapLoadItemsToState(LoadItems event) async* {
+  Stream<ItemsState> _mapLoadItemsOnceToState(LoadItems event) async* {
+    var items = await _itemsRepository.itemsOnce(event.categoryUid, event.partUid, event.topic);
+    add(ItemsUpdated(items));
+  }
+
+  Stream<ItemsState> _mapLoadItemsStreamToState(LoadItems event) async* {
     _itemsSubscription?.cancel();
+
     _itemsSubscription =
-        _itemsRepository.items(event.categoryUid, event.partUid, event.topic)
+        _itemsRepository.itemsStream(event.categoryUid, event.partUid, event.topic)
             .listen(
                 (items) => {
-              // if(items.length > 0) {
                 add(ItemsUpdated(items))
-              // } else {
-              //   _mapLoadTemplateItemsToState(event)
-              // }
             },
-
         );
   }
 

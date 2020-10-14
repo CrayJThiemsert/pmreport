@@ -8,9 +8,8 @@ abstract class ItemsRepository {
   
   Future<void> deleteItem(Item item);
 
-  Stream<List<Item>> items(String categoryUid, String partUid, Topic topic);
-
-  // Stream<List<Item>> templateItems(String categoryUid, String partUid, Topic topic);
+  Stream<List<Item>> itemsStream(String categoryUid, String partUid, Topic topic);
+  Future<List<Item>> itemsOnce(String categoryUid, String partUid, Topic topic);
 
   Future<void> updateItem(Item item);
 }

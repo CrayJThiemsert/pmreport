@@ -7,7 +7,6 @@ import 'package:meta/meta.dart';
 import 'package:pmreport/blocs/categories/categories.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
-
 part 'categories_event.dart';
 part 'categories_state.dart';
 
@@ -25,7 +24,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     CategoriesEvent event,
   ) async* {
     if(event is LoadCategories) {
-      yield* _mapLoadCategoriesToState();
+      yield* _mapLoadCategoriesStreamToState();
     } else if(event is AddCategory) {
       yield* _mapAddCategoryToState(event);
     } else if(event is UpdateCategory) {
@@ -39,11 +38,17 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     }
   }
 
-  Stream<CategoriesState> _mapLoadCategoriesToState() async* {
+  Stream<CategoriesState> _mapLoadCategoriesStreamToState() async* {
     _categoriesSubscription?.cancel();
-    _categoriesSubscription = _categoriesRepository.categories().listen(
+
+    _categoriesSubscription = _categoriesRepository.categoriesStream().listen(
           (categories) => add(CategoriesUpdated(categories)),
     );
+  }
+
+  Stream<CategoriesState> _mapLoadCategoriesOnceToState() async* {
+    var categories = await _categoriesRepository.categoriesOnce();
+    add(CategoriesUpdated(categories));
   }
 
   Stream<CategoriesState> _mapAddCategoryToState(AddCategory event) async* {

@@ -32,41 +32,167 @@ class ItemsMenu extends StatelessWidget {
           // final templateItems = state.items;
 
           return Container(
-            height: displayHeight(context) * 0.22,
+            height: displayHeight(context) * 0.6,
             width: displayWidth(context),
-            // color: Colors.blueAccent,
+            color: Colors.lightGreen[50],
             child: Swiper(
               itemBuilder: (BuildContext context, int index) {
                 // final item = (items.length == 0) ? templateItems[index] : items[index];
                 final item = items[index];
-                return Bounce(
-                  duration: Duration(milliseconds: 100),
-                  child: Column(
+                return Column(
                     children: [
-                      Image.asset(
-                        'assets/${categoryUid}_h96.png',
-                        fit: BoxFit.fitHeight,
-                      ),
+                      // Image.asset(
+                      //   'assets/${categoryUid}_h96.png',
+                      //   fit: BoxFit.fitHeight,
+                      // ),
                       Padding(
                         padding: const EdgeInsets.only(left: 0,),
-                        child: new Text(
-                          "${item.name}",
-                          style: TextStyle(fontSize: 20.0, color: Colors.brown),
+                        child: Container(
+                          height: displayHeight(context) * 0.6,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.amber[600],
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.brown[400],
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [Colors.brown[400], Colors.brown[50]]
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                "${item.name}",
+                                style: TextStyle(fontSize: 20.0, color: Colors.brown),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Bounce(
+                                    duration: Duration(milliseconds: 100),
+                                    child: Container(
+                                      height: displayHeight(context) * 0.1,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.amber[800],
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [Colors.amber[800], Colors.amber[50]]
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text('${item.headers[1].name}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal
+                                            ),
+                                          ),
+                                          Text('${item.name}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Bounce(
+                                    duration: Duration(milliseconds: 100),
+                                    child: Container(
+                                      height: displayHeight(context) * 0.1,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.amber[800],
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [Colors.amber[800], Colors.amber[50]]
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text('${item.headers[2].name}',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal
+                                            ),
+                                          ),
+                                          Text('${item.itemDatas.length > 0 ?? item.itemDatas[2].value ?? '0'}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Bounce(
+                                    duration: Duration(milliseconds: 100),
+                                    child: Container(
+                                      height: displayHeight(context) * 0.1,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.amber[800],
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [Colors.amber[800], Colors.amber[50]]
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text('${item.headers[3].name}',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal
+                                            ),
+                                          ),
+                                          Text('${0}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                  onPressed: () {
-                    print('${item.name} pressed...');
-                    // String uri = '/category/${categoryUid}/part/${partUid}/topic/${topicUid}/item/${items[index].uid}';
-                    // print('${uri} pressed...');
-                    // Navigator.pushNamed(context, uri);
-                  },
-                );
+                  );
               },
               autoplay: false,
               // itemCount: (items.length == 0) ? templateItems.length : items.length,
               itemCount: items.length,
+              itemWidth: 300.0,
+              itemHeight: 400.0,
+              layout: SwiperLayout.TINDER,
               pagination: new SwiperPagination(
                   margin: new EdgeInsets.all(0.0),
                   builder: new SwiperCustomPagination(builder:

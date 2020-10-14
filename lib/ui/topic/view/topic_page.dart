@@ -98,7 +98,7 @@ class TopicPage extends StatelessWidget {
   Scaffold buildPage(BuildContext context, String topicName) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${topicName} - [Topic]',
+        title: Text('${topic.name} - [Topic]',
           style: TextStyle(
             fontSize: 14,
 
