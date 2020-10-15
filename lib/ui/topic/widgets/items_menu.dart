@@ -7,7 +7,9 @@ import 'package:pmreport/blocs/items/items_bloc.dart';
 import 'package:pmreport/blocs/parts/parts.dart';
 import 'package:pmreport/blocs/topics/topics_bloc.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
+import 'package:pmreport/utils/dialog_widget.dart';
 import 'package:pmreport/utils/sizes_helpers.dart';
+import 'package:preventive_maintenance_repository/src/models/item.dart';
 
 class ItemsMenu extends StatelessWidget {
   String categoryUid;
@@ -29,17 +31,18 @@ class ItemsMenu extends StatelessWidget {
         } else if(state is ItemsLoaded) {
 
           final items = state.items;
-          // final templateItems = state.items;
 
-          return Container(
-            height: displayHeight(context) * 0.6,
-            width: displayWidth(context),
-            color: Colors.lightGreen[50],
-            child: Swiper(
-              itemBuilder: (BuildContext context, int index) {
-                // final item = (items.length == 0) ? templateItems[index] : items[index];
-                final item = items[index];
-                return Column(
+          if(items.length > 0) {
+            return Container(
+              height: displayHeight(context) * 0.6,
+              width: displayWidth(context),
+              color: Colors.lightGreen[50],
+              child: Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  // final item = (items.length == 0) ? templateItems[index] : items[index];
+                  final item = items[index];
+                  return Column(
+
                     children: [
                       // Image.asset(
                       //   'assets/${categoryUid}_h96.png',
@@ -47,8 +50,10 @@ class ItemsMenu extends StatelessWidget {
                       // ),
                       Padding(
                         padding: const EdgeInsets.only(left: 0,),
+
                         child: Container(
                           height: displayHeight(context) * 0.6,
+                          width: displayWidth(context) * 0.8,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.amber[600],
@@ -57,160 +62,243 @@ class ItemsMenu extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.brown[400],
                             gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [Colors.brown[400], Colors.brown[50]]
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [Colors.brown[400], Colors.brown[50]]
                             ),
                           ),
                           child: Column(
-                            children: [
-                              Text(
-                                "${item.name}",
-                                style: TextStyle(fontSize: 20.0, color: Colors.brown),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Bounce(
-                                    duration: Duration(milliseconds: 100),
-                                    child: Container(
-                                      height: displayHeight(context) * 0.1,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.amber[800],
-                                        gradient: LinearGradient(
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft,
-                                            colors: [Colors.amber[800], Colors.amber[50]]
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text('${item.headers[1].name}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal
-                                            ),
-                                          ),
-                                          Text('${item.name}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                            children:
+                            buildDataArea(context, item),
+                            // [
+                            // makeButtons(),
+                            //
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   children: [
+                            //     Bounce(
+                            //       duration: Duration(milliseconds: 100),
+                            //       child: Container(
+                            //         height: displayHeight(context) * 0.1,
+                            //         decoration: BoxDecoration(
+                            //           borderRadius: BorderRadius.circular(8),
+                            //           color: Colors.amber[800],
+                            //           gradient: LinearGradient(
+                            //               begin: Alignment.topRight,
+                            //               end: Alignment.bottomLeft,
+                            //               colors: [Colors.amber[800], Colors.amber[50]]
+                            //           ),
+                            //         ),
+                            //         child: Column(
+                            //           children: [
+                            //             Text('${item.headers[1].name}',
+                            //               style: TextStyle(
+                            //                 fontSize: 14,
+                            //                 fontWeight: FontWeight.normal
+                            //               ),
+                            //             ),
+                            //             Text('${item.name}',
+                            //               style: TextStyle(
+                            //                 fontSize: 14,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ),
+                            //
+                            //   ],
+                            // ),
 
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Bounce(
-                                    duration: Duration(milliseconds: 100),
-                                    child: Container(
-                                      height: displayHeight(context) * 0.1,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.amber[800],
-                                        gradient: LinearGradient(
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft,
-                                            colors: [Colors.amber[800], Colors.amber[50]]
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text('${item.headers[2].name}',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal
-                                            ),
-                                          ),
-                                          Text('${item.itemDatas.length > 0 ?? item.itemDatas[2].value ?? '0'}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Bounce(
-                                    duration: Duration(milliseconds: 100),
-                                    child: Container(
-                                      height: displayHeight(context) * 0.1,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.amber[800],
-                                        gradient: LinearGradient(
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft,
-                                            colors: [Colors.amber[800], Colors.amber[50]]
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text('${item.headers[3].name}',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal
-                                            ),
-                                          ),
-                                          Text('${0}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   children: [
+                            //     Bounce(
+                            //       duration: Duration(milliseconds: 100),
+                            //       child: Container(
+                            //         height: displayHeight(context) * 0.1,
+                            //         decoration: BoxDecoration(
+                            //           borderRadius: BorderRadius.circular(8),
+                            //           color: Colors.amber[800],
+                            //           gradient: LinearGradient(
+                            //               begin: Alignment.topRight,
+                            //               end: Alignment.bottomLeft,
+                            //               colors: [Colors.amber[800], Colors.amber[50]]
+                            //           ),
+                            //         ),
+                            //         child: Column(
+                            //           children: [
+                            //             Text('${item.headers[3].name}',
+                            //               style: TextStyle(
+                            //                   fontSize: 14,
+                            //                   fontWeight: FontWeight.normal
+                            //               ),
+                            //             ),
+                            //             Text('${0}',
+                            //               style: TextStyle(
+                            //                 fontSize: 14,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            // ],
                           ),
                         ),
                       ),
                     ],
                   );
-              },
-              autoplay: false,
-              // itemCount: (items.length == 0) ? templateItems.length : items.length,
-              itemCount: items.length,
-              itemWidth: 300.0,
-              itemHeight: 400.0,
-              layout: SwiperLayout.TINDER,
-              pagination: new SwiperPagination(
-                  margin: new EdgeInsets.all(0.0),
-                  builder: new SwiperCustomPagination(builder:
-                      (BuildContext context, SwiperPluginConfig config) {
-                        return DotSwiperPaginationBuilder(
-                                  color: Colors.black12,
-                                  activeColor: Colors.brown,
-                                  size: 5.0,
-                                  activeSize: 10.0
-                          ).build(context, config);
-                  }
-                  )
+                },
+                autoplay: false,
+                // itemCount: (items.length == 0) ? templateItems.length : items.length,
+                itemCount: items.length,
+                itemWidth: 300.0,
+                itemHeight: 400.0,
+                layout: SwiperLayout.TINDER,
+                pagination: new SwiperPagination(
+                    margin: new EdgeInsets.all(0.0),
+                    builder: new SwiperCustomPagination(builder:
+                        (BuildContext context, SwiperPluginConfig config) {
+                      return DotSwiperPaginationBuilder(
+                          color: Colors.black12,
+                          activeColor: Colors.brown,
+                          size: 5.0,
+                          activeSize: 10.0
+                      ).build(context, config);
+                    }
+                    )
+                ),
+                control: new SwiperControl(color: Colors.redAccent),
               ),
-              control: new SwiperControl(color: Colors.redAccent),
-            ),
-          );
+            );
+          } else {
+            // DialogUtils().showMessageDialog(
+            //   context,
+            //   'Message',
+            //   'Item data not found.',
+            //   'OK',
+            // );
+            return AlertDialog(
+              title: new Text("Message"),
+              content: new Text("Item data not found."),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: new Text("Close"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(false);
+                  },
+                ),
+              ],
+            );
+
+            // return Container(
+            //   child: Text('Item data not found'),
+            // );
+          }
         }
       },
+    );
+  }
+
+  List<Widget> buildDataArea(BuildContext context, Item item) {
+    List<Widget> widgets = new List();
+
+    // item index + item name
+    widgets.add(Text(
+      "${item.index}. ${item.name}",
+      style: TextStyle(fontSize: 20.0, color: Colors.brown),
+    )
+    );
+    for(int i=2;i<item.headers.length;i++){
+      switch(i % 2) {
+        case 0: { // left
+          print('left[${i}] ${item.headers[i].uid}');
+          Widget leftWidget = buildDataItem(context, item, i);
+          widgets.add(leftWidget);
+        }
+        break;
+        case 1: { // right
+          print('right[${i}] ${item.name}');
+          Widget rightWidget = buildDataItem(context, item, i);
+          widgets.add(rightWidget);
+        }
+        break;
+
+        default:
+        break;
+
+      }
+    }
+    return widgets;
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: [
+
+        // }
+    //   ],
+    // );
+  }
+
+  String getDataVelue(String headerUid, Item item) {
+    String dataValue = 'n/a';
+    for(int i=0; i<item.itemDatas.length;i++) {
+      if(item.itemDatas[i].uid == headerUid) {
+        dataValue = item.itemDatas[i].value;
+        return dataValue;
+      }
+    }
+    return dataValue;
+  }
+
+  Widget buildDataItem(BuildContext context, Item item, int i) {
+    String dataValue = getDataVelue(item.headers[i].uid, item);
+    print('<<<${dataValue}>>> item no.${item.index} [${item.uid}] header[${item.headers[i].uid}');
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: Bounce(
+            duration: Duration(milliseconds: 100),
+            child: Container(
+              height: displayHeight(context) * 0.1,
+              width: displayWidth(context) * 0.3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.amber[800],
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Colors.amber[800], Colors.amber[50]]
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text('${item.headers[i].name}',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal
+                    ),
+                  ),
+                  Text(
+                    '${dataValue}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
     );
   }
 }

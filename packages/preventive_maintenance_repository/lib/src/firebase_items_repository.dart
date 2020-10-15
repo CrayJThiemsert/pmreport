@@ -36,6 +36,8 @@ class FirebaseItemsRepository implements ItemsRepository {
           querySnapshot.docs
               .map((doc) =>
               Item.fromEntity(ItemEntity.fromSnapshot(doc))).toList()
+    }).catchError((error) => {
+      print('Error - ${error.toString()}')
     });
 
     query = '/templates/ui/topics/${topic.header}/headers';
@@ -49,6 +51,8 @@ class FirebaseItemsRepository implements ItemsRepository {
           querySnapshot.docs
               .map((doc) =>
               Header.fromEntity(HeaderEntity.fromSnapshot(doc))).toList()
+    }).catchError((error) => {
+      print('Error - ${error.toString()}')
     });
 
     // List<ItemData> itemDatas;
@@ -77,6 +81,8 @@ class FirebaseItemsRepository implements ItemsRepository {
             querySnapshot.docs
                 .map((doc) =>
                 ItemData.fromEntity(ItemDataEntity.fromSnapshot(doc))).toList()
+      }).catchError((error) => {
+        print('Error - ${error.toString()}')
       });
       items[i].headers = headers;
       items[i].itemDatas = itemDatas;
