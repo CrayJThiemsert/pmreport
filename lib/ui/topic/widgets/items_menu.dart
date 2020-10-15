@@ -34,7 +34,7 @@ class ItemsMenu extends StatelessWidget {
 
           if(items.length > 0) {
             return Container(
-              height: displayHeight(context) * 0.6,
+              height: displayHeight(context) * 0.7,
               width: displayWidth(context),
               color: Colors.lightGreen[50],
               child: Swiper(
@@ -52,8 +52,8 @@ class ItemsMenu extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 0,),
 
                         child: Container(
-                          height: displayHeight(context) * 0.6,
-                          width: displayWidth(context) * 0.8,
+                          height: displayHeight(context) * 0.5,
+                          width: displayWidth(context),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.amber[600],
@@ -67,90 +67,13 @@ class ItemsMenu extends StatelessWidget {
                                 colors: [Colors.brown[400], Colors.brown[50]]
                             ),
                           ),
-                          child: Column(
-                            children:
-                            buildDataArea(context, item),
-                            // [
-                            // makeButtons(),
-                            //
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            //   crossAxisAlignment: CrossAxisAlignment.center,
-                            //   children: [
-                            //     Bounce(
-                            //       duration: Duration(milliseconds: 100),
-                            //       child: Container(
-                            //         height: displayHeight(context) * 0.1,
-                            //         decoration: BoxDecoration(
-                            //           borderRadius: BorderRadius.circular(8),
-                            //           color: Colors.amber[800],
-                            //           gradient: LinearGradient(
-                            //               begin: Alignment.topRight,
-                            //               end: Alignment.bottomLeft,
-                            //               colors: [Colors.amber[800], Colors.amber[50]]
-                            //           ),
-                            //         ),
-                            //         child: Column(
-                            //           children: [
-                            //             Text('${item.headers[1].name}',
-                            //               style: TextStyle(
-                            //                 fontSize: 14,
-                            //                 fontWeight: FontWeight.normal
-                            //               ),
-                            //             ),
-                            //             Text('${item.name}',
-                            //               style: TextStyle(
-                            //                 fontSize: 14,
-                            //                 fontWeight: FontWeight.bold,
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ),
-                            //
-                            //   ],
-                            // ),
-
-
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            //   crossAxisAlignment: CrossAxisAlignment.center,
-                            //   children: [
-                            //     Bounce(
-                            //       duration: Duration(milliseconds: 100),
-                            //       child: Container(
-                            //         height: displayHeight(context) * 0.1,
-                            //         decoration: BoxDecoration(
-                            //           borderRadius: BorderRadius.circular(8),
-                            //           color: Colors.amber[800],
-                            //           gradient: LinearGradient(
-                            //               begin: Alignment.topRight,
-                            //               end: Alignment.bottomLeft,
-                            //               colors: [Colors.amber[800], Colors.amber[50]]
-                            //           ),
-                            //         ),
-                            //         child: Column(
-                            //           children: [
-                            //             Text('${item.headers[3].name}',
-                            //               style: TextStyle(
-                            //                   fontSize: 14,
-                            //                   fontWeight: FontWeight.normal
-                            //               ),
-                            //             ),
-                            //             Text('${0}',
-                            //               style: TextStyle(
-                            //                 fontSize: 14,
-                            //                 fontWeight: FontWeight.bold,
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // ],
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children:
+                              buildDataArea(context, item),
+                            ),
                           ),
                         ),
                       ),
@@ -238,6 +161,7 @@ class ItemsMenu extends StatelessWidget {
 
       }
     }
+
     return widgets;
     // return Row(
     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -249,7 +173,7 @@ class ItemsMenu extends StatelessWidget {
     // );
   }
 
-  String getDataVelue(String headerUid, Item item) {
+  String getDataValue(String headerUid, Item item) {
     String dataValue = 'n/a';
     for(int i=0; i<item.itemDatas.length;i++) {
       if(item.itemDatas[i].uid == headerUid) {
@@ -261,7 +185,7 @@ class ItemsMenu extends StatelessWidget {
   }
 
   Widget buildDataItem(BuildContext context, Item item, int i) {
-    String dataValue = getDataVelue(item.headers[i].uid, item);
+    String dataValue = getDataValue(item.headers[i].uid, item);
     print('<<<${dataValue}>>> item no.${item.index} [${item.uid}] header[${item.headers[i].uid}');
 
     return Padding(
@@ -269,8 +193,8 @@ class ItemsMenu extends StatelessWidget {
       child: Bounce(
             duration: Duration(milliseconds: 100),
             child: Container(
-              height: displayHeight(context) * 0.1,
-              width: displayWidth(context) * 0.3,
+              height: displayHeight(context) * 0.07,
+              width: displayWidth(context) * 0.38,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.amber[800],
@@ -281,6 +205,8 @@ class ItemsMenu extends StatelessWidget {
                 ),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text('${item.headers[i].name}',
                     style: TextStyle(

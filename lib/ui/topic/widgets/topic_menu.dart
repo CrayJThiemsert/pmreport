@@ -12,6 +12,7 @@ import 'package:pmreport/blocs/parts/parts.dart';
 import 'package:pmreport/ui/category/widgets/category_menu.dart';
 import 'package:pmreport/ui/part/widgets/topics_menu.dart';
 import 'package:pmreport/ui/topic/widgets/items_menu.dart';
+import 'package:pmreport/utils/sizes_helpers.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 class TopicMenu extends StatelessWidget {
@@ -39,6 +40,7 @@ class TopicMenu extends StatelessWidget {
               Bounce(
                 duration: Duration(milliseconds: 100),
                 child: Container(
+
                   // color: Colors.yellowAccent,
                   padding: const EdgeInsets.all(16),
                   child: Column(

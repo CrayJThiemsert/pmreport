@@ -40,7 +40,7 @@ class FirebaseItemsRepository implements ItemsRepository {
       print('Error - ${error.toString()}')
     });
 
-    query = '/templates/ui/topics/${topic.header}/headers';
+    query = '/templates/ui/sites/nachuak_solar_power_plant/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/headers';
     final headersLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
 
     List<Header> headers;
@@ -54,6 +54,22 @@ class FirebaseItemsRepository implements ItemsRepository {
     }).catchError((error) => {
       print('Error - ${error.toString()}')
     });
+
+    if(headers.length == 0) {
+      query = '/templates/ui/topics/${topic.header}/headers';
+      final headersLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
+
+      await headersLoadCollection
+          .get()
+          .then((QuerySnapshot querySnapshot) => {
+        headers =
+            querySnapshot.docs
+                .map((doc) =>
+                Header.fromEntity(HeaderEntity.fromSnapshot(doc))).toList()
+      }).catchError((error) => {
+        print('Error - ${error.toString()}')
+      });
+    }
 
     // List<ItemData> itemDatas;
     // items.forEach((item) async {
