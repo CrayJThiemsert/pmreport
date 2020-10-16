@@ -34,7 +34,7 @@ class ItemsMenu extends StatelessWidget {
 
           if(items.length > 0) {
             return Container(
-              height: displayHeight(context) * 0.7,
+              height: displayHeight(context) * 0.6,
               width: displayWidth(context),
               color: Colors.lightGreen[50],
               child: Swiper(
@@ -191,40 +191,56 @@ class ItemsMenu extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Bounce(
-            duration: Duration(milliseconds: 100),
-            child: Container(
-              height: displayHeight(context) * 0.07,
-              width: displayWidth(context) * 0.38,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.amber[800],
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [Colors.amber[800], Colors.amber[50]]
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text('${item.headers[i].name}',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal
-                    ),
-                  ),
-                  Text(
-                    '${dataValue}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+          duration: Duration(milliseconds: 100),
+          child: Container(
+            height: displayHeight(context) * 0.07,
+            width: displayWidth(context) * 0.38,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.amber[800],
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.amber[800], Colors.amber[50]]
               ),
             ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text('${item.headers[i].name}',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal
+                  ),
+                ),
+                Text(
+                  '${dataValue}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
+          onPressed: () {
+            DialogUtils().showEditTextDialog(
+              context: context,
+              title: 'Input Data',
+              yesText: 'Save',
+              noText: 'Cancel',
+              inputType: item.headers[i].inputType,
+              content: dataValue,
+            );
+            // DialogUtils().showMessageDialog(
+            //   context,
+            //   'Message',
+            //   'Input Item data here.',
+            //   'OK',
+            // );
+          },
+        ),
     );
   }
 }

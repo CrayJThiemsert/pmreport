@@ -34,43 +34,45 @@ class TopicMenu extends StatelessWidget {
             color: Colors.brown
           ),),
           ItemsMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Bounce(
-                duration: Duration(milliseconds: 100),
-                child: Container(
-
-                  // color: Colors.yellowAccent,
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.brown,
+          Container(
+            height: displayHeight(context) * 0.13,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Bounce(
+                  duration: Duration(milliseconds: 100),
+                  child: Container(
+                    // color: Colors.yellowAccent,
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.brown,
+                          ),
                         ),
-                      ),
-                      Text('Back',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.brown,
+                        Text('Back',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.brown,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  onPressed: () {
+                    print('Back pressed...');
+                    Navigator.pop(context);
+                  },
                 ),
-                onPressed: () {
-                  print('Back pressed...');
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui show Gradient, TextBox, lerpDouble, Image;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -181,15 +182,16 @@ class DialogUtils {
     ;
   }
 
-  Future<bool> showEditTextDialog(BuildContext context,
-      String title,
-      String content,
-      String yesText,
-      String noText,
-      String yesFunc,
-      String key,
-      User byUser
-      ) {
+  Future<bool> showEditTextDialog({BuildContext context,
+    String title,
+    String content,
+    String yesText,
+    String noText,
+    String yesFunc,
+    String key,
+    String inputType,
+    User byUser
+  }) {
     String _value = content;
     _context = context;
     return showGeneralDialog(
@@ -238,7 +240,7 @@ class DialogUtils {
                       maxLength: maxLengthByFunction(yesFunc),
                       maxLines: maxLinesByFunction(yesFunc),
                       autofocus: false,
-                      keyboardType: keyboardTypeByFunction(yesFunc),
+                      keyboardType: keyboardTypeByFunction(inputType),
                       onFieldSubmitted: (value) {
                         print('onFieldSubmitted value[${value}]');
                         _value = value;
@@ -282,6 +284,7 @@ class DialogUtils {
                               )
                           ),
                           // onPressed: () => doFunctionWithValue(context, yesFunc, key, _value, byUser),
+                          onPressed: () => doFunction(context, 'close_dialog'),
                           child: Text(yesText,
                             style: TextStyle(
                               fontFamily: 'K2D-Medium',
@@ -336,6 +339,11 @@ class DialogUtils {
     switch(funcType) {
       case 'shared_gunpla_comment':
         result = TextInputType.multiline;
+        break;
+      case 'number':
+      case 'integer':
+      case 'decimal':
+        result = TextInputType.number;
         break;
     }
     return result;
