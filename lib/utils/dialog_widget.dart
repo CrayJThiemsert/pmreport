@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pmreport/utils/input_type_form.dart';
 
 class DialogUtils {
 
@@ -182,7 +183,7 @@ class DialogUtils {
     ;
   }
 
-  Future<bool> showEditTextDialog({BuildContext context,
+  Future<bool> showInputDialog({BuildContext context,
     String title,
     String content,
     String yesText,
@@ -219,39 +220,12 @@ class DialogUtils {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    TextFormField(
-
-                      initialValue: content,
-                      decoration: InputDecoration(
-                        prefixIcon: prefixIconByFunction(yesFunc),
-//                        border: OutlineInputBorder(),
-                        fillColor: Colors.white,
-                        filled: true,
-//                        contentPadding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.limeAccent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.limeAccent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      maxLength: maxLengthByFunction(yesFunc),
-                      maxLines: maxLinesByFunction(yesFunc),
-                      autofocus: false,
-                      keyboardType: keyboardTypeByFunction(inputType),
-                      onFieldSubmitted: (value) {
-                        print('onFieldSubmitted value[${value}]');
-                        _value = value;
-                      },
-                      onChanged: (text) {
-                        _value = text;
-                      },
-                      style: TextStyle(
-                        fontFamily: 'K2D-Regular',
-                        color: Colors.grey[800],
-                      ),
+                    // buildInputTypeField(content, yesFunc, inputType, _value),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InputTypeForm(content: content, yesFunc: yesFunc, inputType: inputType, value: _value),
+                      ],
                     ),
                     Divider(
                       color: Colors.white,
@@ -310,6 +284,83 @@ class DialogUtils {
         ;
   }
 
+  Widget buildInputTypeField(String content, String yesFunc, String inputType, String _value) {
+    Widget _widget = Container(
+      height: 20,
+      width: 30,
+    );
+    switch(inputType) {
+      case 'integer':
+      case 'decimal':
+      case 'text':
+      {
+        _widget = TextFormField(
+          initialValue: content,
+          decoration: InputDecoration(
+            prefixIcon: prefixIconByFunction(yesFunc),
+//                        border: OutlineInputBorder(),
+            fillColor: Colors.white,
+            filled: true,
+//                        contentPadding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.limeAccent),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.limeAccent),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          maxLength: maxLengthByFunction(yesFunc),
+          maxLines: maxLinesByFunction(yesFunc),
+          autofocus: false,
+          keyboardType: keyboardTypeByFunction(inputType),
+          onFieldSubmitted: (value) {
+            print('onFieldSubmitted value[${value}]');
+            _value = value;
+          },
+          onChanged: (text) {
+            _value = text;
+          },
+          style: TextStyle(
+            fontFamily: 'K2D-Regular',
+            color: Colors.grey[800],
+          ),
+        );
+        break;
+      }
+      // - single_options_ok {Ok, [default Empty or Blank]}
+      // - single_options_testing {Pass, Monitoring, Maintenance} (ใช้ "Pass" แทนกรณีที่ค่าเป็น "Normal" ด้วยเลย)
+      // - multiple_options_condition {Dirtiness, Degradation, Clean, Normal, [default Empty or Blank]}
+      // - multiple_options_lightning_arrester {Dirtiness, Degradation, Clean, Normal, [default Empty or Blank]}
+      // - multiple_options_drop_fuse_cut_out {Dirtiness, Damage, Degradation, Clean, Normal, [default Empty or Blank]}
+      // - multiple_options_connection {Loosening, Burn, Damage, Normal, [default Empty or Blank]}
+      // - multiple_options_ground {Burn, Damage, Normal, [default Empty or Blank]}
+      case 'single_options_ok':
+      case 'single_options_testing':
+      case 'multiple_options_condition':
+      case 'multiple_options_lightning_arrester':
+      case 'multiple_options_drop_fuse_cut_out':
+      case 'multiple_options_connection':
+      case 'multiple_options_ground':
+        {
+          bool _selected = false;
+          _widget = FilterChip(
+              selected: _selected,
+              label: Text('Woolha'),
+              selectedColor: Colors.lightGreen,
+              onSelected: (bool selected) {
+                // setState(() {
+                //   _selected = !_selected;
+                // });
+              }
+          );
+          break;
+        }
+    }
+    return _widget;
+  }
+
   Icon prefixIconByFunction(String funcType) {
     Icon result = null;
     switch(funcType) {
@@ -338,6 +389,7 @@ class DialogUtils {
     TextInputType result = TextInputType.text;
     switch(funcType) {
       case 'shared_gunpla_comment':
+      case 'multiline':
         result = TextInputType.multiline;
         break;
       case 'number':

@@ -11,12 +11,17 @@ import 'package:pmreport/utils/dialog_widget.dart';
 import 'package:pmreport/utils/sizes_helpers.dart';
 import 'package:preventive_maintenance_repository/src/models/item.dart';
 
-class ItemsMenu extends StatelessWidget {
+class ItemsMenu extends StatefulWidget {
   String categoryUid;
   String partUid;
   String topicUid;
   ItemsMenu({Key key, this.categoryUid, this.partUid, this.topicUid}) : super(key: key);
 
+  @override
+  _ItemsMenuState createState() => _ItemsMenuState();
+}
+
+class _ItemsMenuState extends State<ItemsMenu> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ItemsBloc, ItemsState>(
@@ -225,7 +230,7 @@ class ItemsMenu extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            DialogUtils().showEditTextDialog(
+            DialogUtils().showInputDialog(
               context: context,
               title: 'Input Data',
               yesText: 'Save',
