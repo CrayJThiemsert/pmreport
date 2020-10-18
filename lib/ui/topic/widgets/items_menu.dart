@@ -9,19 +9,25 @@ import 'package:pmreport/blocs/topics/topics_bloc.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 import 'package:pmreport/utils/dialog_widget.dart';
 import 'package:pmreport/utils/sizes_helpers.dart';
+import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 import 'package:preventive_maintenance_repository/src/models/item.dart';
 
 class ItemsMenu extends StatefulWidget {
   String categoryUid;
   String partUid;
   String topicUid;
-  ItemsMenu({Key key, this.categoryUid, this.partUid, this.topicUid}) : super(key: key);
+  Topic topic;
+  ItemsMenu({Key key, this.categoryUid, this.partUid, this.topicUid, this.topic}) : super(key: key);
 
   @override
-  _ItemsMenuState createState() => _ItemsMenuState();
+  _ItemsMenuState createState() => _ItemsMenuState(topic: this.topic);
 }
 
 class _ItemsMenuState extends State<ItemsMenu> {
+  Topic topic;
+  _ItemsMenuState({Topic topic}) :
+        this.topic = topic;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ItemsBloc, ItemsState>(
@@ -115,7 +121,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
             //   'OK',
             // );
             return AlertDialog(
-              title: new Text("Message"),
+              title: new Text("Message - [${topic.platform}]"),
               content: new Text("Item data not found."),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
@@ -199,7 +205,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
           duration: Duration(milliseconds: 100),
           child: Container(
             height: displayHeight(context) * 0.07,
-            width: displayWidth(context) * 0.38,
+            width: displayWidth(context) * 0.45,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: Colors.amber[800],
@@ -232,7 +238,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
           onPressed: () {
             DialogUtils().showInputDialog(
               context: context,
-              title: 'Input Data',
+              title: 'Input ${item.headers[i].name} Data',
               yesText: 'Save',
               noText: 'Cancel',
               inputType: item.headers[i].inputType,

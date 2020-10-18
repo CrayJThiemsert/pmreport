@@ -155,7 +155,7 @@ class TopicPage extends StatelessWidget {
             ),
           ],
 
-          child: TopicMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid,),
+          child: TopicMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid, topic: topic,),
         ),
       ),
 

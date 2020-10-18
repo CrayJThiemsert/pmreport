@@ -21,10 +21,10 @@ class _InputTypeFormState extends State<InputTypeForm> with TickerProviderStateM
   String value;
 
   _InputTypeFormState(String content, String yesFunc, String inputType, String value) :
-  this.content = content,
-  this.yesFunc = yesFunc,
-  this.inputType = inputType,
-  this.value = value;
+    this.content = content == 'n/a' ? '' : content,
+    this.yesFunc = yesFunc,
+    this.inputType = inputType,
+    this.value = value;
 
   bool isSelected = false;
   List<bool> chipsIsSelectedList = List<bool>();

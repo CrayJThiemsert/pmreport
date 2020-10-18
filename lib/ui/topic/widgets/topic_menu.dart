@@ -19,7 +19,8 @@ class TopicMenu extends StatelessWidget {
   String categoryUid;
   String partUid;
   String topicUid;
-  TopicMenu({Key key, this.categoryUid, this.partUid, this.topicUid}) : super(key: key);
+  Topic topic;
+  TopicMenu({Key key, this.categoryUid, this.partUid, this.topicUid, this.topic}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class TopicMenu extends StatelessWidget {
             fontSize: 18,
             color: Colors.brown
           ),),
-          ItemsMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid,),
+          ItemsMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid, topic: topic,),
           Container(
             height: displayHeight(context) * 0.13,
             child: Row(
