@@ -184,11 +184,11 @@ class _ItemsMenuState extends State<ItemsMenu> {
     // );
   }
 
-  String getDataValue(String headerUid, Item item) {
-    String dataValue = 'n/a';
+  ItemData getItemData(String headerUid, Item item) {
+    ItemData dataValue = ItemData(uid: headerUid);
     for(int i=0; i<item.itemDatas.length;i++) {
       if(item.itemDatas[i].uid == headerUid) {
-        dataValue = item.itemDatas[i].value;
+        dataValue = item.itemDatas[i];
         return dataValue;
       }
     }
@@ -196,8 +196,8 @@ class _ItemsMenuState extends State<ItemsMenu> {
   }
 
   Widget buildDataItem(BuildContext context, Item item, int i) {
-    String dataValue = getDataValue(item.headers[i].uid, item);
-    print('<<<${dataValue}>>> item no.${item.index} [${item.uid}] header[${item.headers[i].uid}');
+    ItemData itemData = getItemData(item.headers[i].uid, item);
+    print('<<<${itemData}>>> item no.${item.index} [${item.uid}] header[${item.headers[i].uid}');
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -226,7 +226,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
                   ),
                 ),
                 Text(
-                  '${dataValue}',
+                  '${itemData.value}',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -236,13 +236,15 @@ class _ItemsMenuState extends State<ItemsMenu> {
             ),
           ),
           onPressed: () {
+            print('hit ${item.headers[i].name}!!');
             DialogUtils().showInputDialog(
               context: context,
               title: 'Input ${item.headers[i].name} Data',
               yesText: 'Save',
               noText: 'Cancel',
               inputType: item.headers[i].inputType,
-              content: dataValue,
+              key: itemData.uid,
+              content: itemData.value,
             );
             // DialogUtils().showMessageDialog(
             //   context,

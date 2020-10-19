@@ -193,7 +193,9 @@ class DialogUtils {
     String inputType,
     User byUser
   }) {
+    print('Drawing input dialog...');
     String _value = content;
+    String _key = key;
     _context = context;
     return showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
@@ -224,50 +226,10 @@ class DialogUtils {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InputTypeForm(content: content, yesFunc: yesFunc, inputType: inputType, value: _value),
+                        InputTypeForm(uid: _key, yesFunc: yesFunc, yesText: yesText, noText: noText, inputType: inputType, value: _value),
                       ],
                     ),
-                    Divider(
-                      color: Colors.white,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        FlatButton(
-                          color: Colors.grey[800],
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Colors.white,
-                                  width: 1
-                              )
-                          ),
-                          onPressed: () => doFunction(context, 'close_dialog'),
-                          child: Text(noText,
-                            style: TextStyle(
-                              fontFamily: 'K2D-Medium',
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        FlatButton(
-                          color: Colors.grey[800],
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Colors.white,
-                                  width: 1
-                              )
-                          ),
-                          // onPressed: () => doFunctionWithValue(context, yesFunc, key, _value, byUser),
-                          onPressed: () => doFunction(context, 'close_dialog'),
-                          child: Text(yesText,
-                            style: TextStyle(
-                              fontFamily: 'K2D-Medium',
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+
                   ],
                 ),
               ),

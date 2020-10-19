@@ -10,3 +10,4 @@ export 'src/categories_repository.dart';
 export 'src/parts_repository.dart';
 export 'src/topics_repository.dart';
 export 'src/items_repository.dart';
+export 'src/itemdatas_repository.dart';
