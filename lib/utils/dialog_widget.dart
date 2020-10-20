@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pmreport/utils/input_type_form.dart';
+import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 class DialogUtils {
 
@@ -82,8 +83,6 @@ class DialogUtils {
         barrierLabel: '',
         context: context,
         pageBuilder: (context, animation1, animation2) {})
-//     ??
-//    false
         ;
   }
 
@@ -191,6 +190,7 @@ class DialogUtils {
     String yesFunc,
     String key,
     String inputType,
+    Item item,
     User byUser
   }) {
     print('Drawing input dialog...');
@@ -226,7 +226,7 @@ class DialogUtils {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InputTypeForm(uid: _key, yesFunc: yesFunc, yesText: yesText, noText: noText, inputType: inputType, value: _value),
+                        InputTypeForm(uid: _key, yesFunc: yesFunc, yesText: yesText, noText: noText, inputType: inputType, value: _value, item: item,),
                       ],
                     ),
 

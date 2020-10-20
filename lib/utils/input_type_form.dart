@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pmreport/blocs/itemdatas/itemdatas_bloc.dart';
+
+
 import 'package:pmreport/utils/constants.dart';
 import 'package:pmreport/utils/dialog_widget.dart';
+import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
+
 
 class InputTypeForm extends StatefulWidget {
   String uid;
@@ -9,14 +15,15 @@ class InputTypeForm extends StatefulWidget {
   String noText;
   String inputType;
   String value;
+  Item item;
 
   InputTypeForm(
-      {Key key, this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value})
+      {Key key, this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item})
       : super(key: key);
 
   @override
   _InputTypeFormState createState() => _InputTypeFormState(
-      this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value);
+      this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item);
 }
 
 class _InputTypeFormState extends State<InputTypeForm>
@@ -27,15 +34,17 @@ class _InputTypeFormState extends State<InputTypeForm>
   String noText;
   String inputType;
   String _value;
+  Item item;
 
   _InputTypeFormState(
-      String uid, String yesFunc, String yesText, String noText, String inputType, String value)
+      String uid, String yesFunc, String yesText, String noText, String inputType, String value, Item item)
       : this.uid = uid == 'n/a' ? '' : uid,
         this.yesFunc = yesFunc,
         this.yesText = yesText,
         this.noText = noText,
         this.inputType = inputType,
-        this._value = value;
+        this._value = value,
+        this.item = item;
 
   bool isSelected = false;
   List<String> chipsList = List<String>();
@@ -151,48 +160,6 @@ class _InputTypeFormState extends State<InputTypeForm>
           ));
           break;
         }
-      // - single_options_ok {Ok, [default Empty or Blank]}
-      // - single_options_testing {Pass, Monitoring, Maintenance} (ใช้ "Pass" แทนกรณีที่ค่าเป็น "Normal" ด้วยเลย)
-      // - multiple_options_condition {Dirtiness, Degradation, Clean, Normal, [default Empty or Blank]}
-      // - multiple_options_lightning_arrester {Dirtiness, Degradation, Clean, Normal, [default Empty or Blank]}
-      // - multiple_options_drop_fuse_cut_out {Dirtiness, Damage, Degradation, Clean, Normal, [default Empty or Blank]}
-      // - multiple_options_connection {Loosening, Burn, Damage, Normal, [default Empty or Blank]}
-      // - multiple_options_ground {Burn, Damage, Normal, [default Empty or Blank]}
-      // case 'single_options_ok':
-      //   {
-      //     chipsList = Constants.single_options_ok;
-      //     break;
-      //   }
-      // case 'single_options_testing':
-      //   {
-      //     chipsList = Constants.single_options_testing;
-      //     break;
-      //   }
-      // case 'multiple_options_condition':
-      //   {
-      //     chipsList = Constants.multiple_options_condition;
-      //     break;
-      //   }
-      // case 'multiple_options_lightning_arrester':
-      //   {
-      //     chipsList = Constants.multiple_options_lightning_arrester;
-      //     break;
-      //   }
-      // case 'multiple_options_drop_fuse_cut_out':
-      //   {
-      //     chipsList = Constants.multiple_options_drop_fuse_cut_out;
-      //     break;
-      //   }
-      // case 'multiple_options_connection':
-      //   {
-      //     chipsList = Constants.multiple_options_connection;
-      //     break;
-      //   }
-      // case 'multiple_options_ground':
-      //   {
-      //     chipsList = Constants.multiple_options_ground;
-      //     break;
-      //   }
     }
 
     // print('uid[${uid}] - chipsList.length[${chipsList.length}]');
@@ -261,8 +228,18 @@ class _InputTypeFormState extends State<InputTypeForm>
   }
 
   doFunctionWithValue(String value, List<bool> chipsIsSelectedList) {
+    print('item: ${item}');
     print('value: ${value}');
     print('chipsIsSelectedList: ${chipsIsSelectedList}');
+
+    // BlocProvider<ItemDatasBloc>(
+    //   create: (context) {
+    //     return ItemDatasBloc(
+    //       itemDatasRepository: FirebaseItemDatasRepository(),
+    //     )..add(AddItemData(categoryUid, partUid, topicUid, topic, item, itemData));
+    //   },
+    // );
+
     Navigator.of(context, rootNavigator: true).pop(false);
   }
 }

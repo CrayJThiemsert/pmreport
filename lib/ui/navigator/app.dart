@@ -136,10 +136,11 @@ class _AppViewState extends State<AppView> {
         var uri = Uri.parse(settings.name);
         if(uri.pathSegments.length == 2) {
           var uid = uri.pathSegments[1];
+          Category category = settings.arguments;
           switch (uri.pathSegments.first) {
             case 'category':
               {
-                return MaterialPageRoute(builder: (context) => CategoryPage(categoryUid: uid, ));
+                return MaterialPageRoute(builder: (context) => CategoryPage(categoryUid: uid, category: category));
               }
               break;
           }
@@ -149,10 +150,11 @@ class _AppViewState extends State<AppView> {
           var path = uri.pathSegments[2];
           var categoryUid = uri.pathSegments[1];
           var partUid = uri.pathSegments[3];
+          Part part = settings.arguments;
           switch (path) {
             case 'part':
               {
-                return MaterialPageRoute(builder: (context) => PartPage(categoryUid: categoryUid, partUid: partUid,));
+                return MaterialPageRoute(builder: (context) => PartPage(categoryUid: categoryUid, partUid: partUid, part: part));
               }
               break;
           }

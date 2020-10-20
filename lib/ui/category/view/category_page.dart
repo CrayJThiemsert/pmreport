@@ -8,8 +8,9 @@ import 'package:preventive_maintenance_repository/preventive_maintenance_reposit
 
 class CategoryPage extends StatelessWidget {
   String categoryUid;
+  Category category;
 
-  CategoryPage({this.categoryUid});
+  CategoryPage({this.categoryUid, this.category});
 
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => CategoryPage());
@@ -106,7 +107,7 @@ class CategoryPage extends StatelessWidget {
             ),
           ],
 
-          child: CategoryMenu(categoryUid: categoryUid,),
+          child: CategoryMenu(categoryUid: categoryUid, category: category,),
         ),
       ),
 

@@ -9,12 +9,14 @@ import 'package:pmreport/blocs/parts/parts.dart';
 import 'package:pmreport/blocs/topics/topics_bloc.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 import 'package:pmreport/utils/sizes_helpers.dart';
+import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 import 'package:preventive_maintenance_repository/src/models/topic.dart';
 
 class TopicsMenu extends StatelessWidget {
   String categoryUid;
   String partUid;
-  TopicsMenu({Key key, this.categoryUid, this.partUid}) : super(key: key);
+  Part part;
+  TopicsMenu({Key key, this.categoryUid, this.partUid, this.part}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,7 @@ class TopicsMenu extends StatelessWidget {
                 ),
                 onPressed: () {
                   String uri = '/category/${categoryUid}/part/${partUid}/topic/${topics[index].uid}';
+                  topics[index].part = part;
                   print('${uri} pressed...');
                   Navigator.pushNamed(context, uri, arguments: topics[index]);
                 },

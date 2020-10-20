@@ -12,7 +12,7 @@ part 'itemdatas_state.dart';
 
 class ItemDatasBloc extends Bloc<ItemDatasEvent, ItemDatasState> {
   final ItemDatasRepository _itemDatasRepository;
-  StreamSubscription _itemsSubscription;
+  StreamSubscription _itemDatasSubscription;
 
   ItemDatasBloc({@required ItemDatasRepository itemDatasRepository})
       : assert(itemDatasRepository != null),
@@ -45,9 +45,9 @@ class ItemDatasBloc extends Bloc<ItemDatasEvent, ItemDatasState> {
   }
 
   Stream<ItemDatasState> _mapLoadItemDatasStreamToState(LoadItemDatas event) async* {
-    _itemsSubscription?.cancel();
+    _itemDatasSubscription?.cancel();
 
-    _itemsSubscription =
+    _itemDatasSubscription =
         _itemDatasRepository.itemDatasStream(event.categoryUid, event.partUid, event.topic, event.item)
             .listen(
                 (items) => {
@@ -93,7 +93,7 @@ class ItemDatasBloc extends Bloc<ItemDatasEvent, ItemDatasState> {
 
   @override
   Future<Function> close() {
-    _itemsSubscription?.cancel();
+    _itemDatasSubscription?.cancel();
     return super.close();
   }
 }

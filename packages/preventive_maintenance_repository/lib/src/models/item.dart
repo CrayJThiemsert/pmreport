@@ -1,7 +1,8 @@
 import 'package:meta/meta.dart';
+import 'package:preventive_maintenance_repository/src/entities/entities.dart';
+import 'package:preventive_maintenance_repository/src/models/models.dart';
 
-import '../entities/entities.dart';
-import 'models.dart';
+
 
 @immutable
 class Item {
@@ -11,6 +12,7 @@ class Item {
   final String name;
   List<Header> headers;
   List<ItemData> itemDatas;
+  Topic topic;
 
   Item({
     String id,
@@ -19,13 +21,15 @@ class Item {
     String name = '',
     List<Header> headers,
     List<ItemData> itemDatas,
+    Topic topic,
   })
     : this.index = index ?? 0,
       this.name = name ?? '',
       this.id = id ?? '',
       this.uid = uid ?? '',
       this.headers = headers,
-      this.itemDatas = itemDatas
+      this.itemDatas = itemDatas,
+      this.topic = topic
     ;
 
   Item copyWith({
@@ -35,6 +39,7 @@ class Item {
     String name,
     List<Header> headers,
     List<ItemData> itemDatas,
+    Topic topic,
   }) {
     return Item(
       id: id ?? this.id,
@@ -43,12 +48,13 @@ class Item {
       name: name ?? this.name,
       headers: headers ?? this.headers,
       itemDatas: itemDatas ?? this.itemDatas,
+      topic: topic ?? this.topic,
     );
   }
 
   @override
   int get hashCode =>
-      id.hashCode ^ uid.hashCode ^ index.hashCode ^ name.hashCode;
+      id.hashCode ^ uid.hashCode ^ index.hashCode ^ name.hashCode ^ topic.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -60,11 +66,12 @@ class Item {
         index == other.index &&
         name == other.name &&
         headers == other.headers &&
-        itemDatas == other.itemDatas;
+        itemDatas == other.itemDatas &&
+        topic == other.topic;
 
   @override
   String toString() {
-    return 'Item { id: $id, uid: $uid, index: $index, name: $name, headers: $headers, itemDatas: ${itemDatas} }';
+    return 'Item { id: $id, uid: $uid, index: $index, name: $name, headers: $headers, itemDatas: ${itemDatas}, topic: ${topic} }';
   }
 
   ItemEntity toEntity() {

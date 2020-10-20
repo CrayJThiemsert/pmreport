@@ -4,6 +4,7 @@ export 'src/firebase_categories_repository.dart';
 export 'src/firebase_parts_repository.dart';
 export 'src/firebase_topics_repository.dart';
 export 'src/firebase_items_repository.dart';
+export 'src/firebase_itemdatas_repository.dart';
 
 export 'src/models/models.dart';
 export 'src/categories_repository.dart';

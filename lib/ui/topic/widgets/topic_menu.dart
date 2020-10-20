@@ -18,9 +18,10 @@ import 'package:preventive_maintenance_repository/preventive_maintenance_reposit
 class TopicMenu extends StatelessWidget {
   String categoryUid;
   String partUid;
+  Part part;
   String topicUid;
   Topic topic;
-  TopicMenu({Key key, this.categoryUid, this.partUid, this.topicUid, this.topic}) : super(key: key);
+  TopicMenu({Key key, this.categoryUid, this.partUid, this.part, this.topicUid, this.topic}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

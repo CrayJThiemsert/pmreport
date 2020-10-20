@@ -70,8 +70,9 @@ class CategoriesMenu extends StatelessWidget {
                 ),
                 onPressed: () {
                   String uri = '/category/${categories[index].uid}';
+
                   print('${uri} pressed...');
-                  Navigator.pushNamed(context, uri);
+                  Navigator.pushNamed(context, uri, arguments: categories[index]);
                 },
               );
             },

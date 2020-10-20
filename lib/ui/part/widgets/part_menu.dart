@@ -16,7 +16,8 @@ import 'package:preventive_maintenance_repository/preventive_maintenance_reposit
 class PartMenu extends StatelessWidget {
   String categoryUid;
   String partUid;
-  PartMenu({Key key, this.categoryUid, this.partUid}) : super(key: key);
+  Part part;
+  PartMenu({Key key, this.categoryUid, this.partUid, this.part}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class PartMenu extends StatelessWidget {
             fontSize: 18,
             color: Colors.brown
           ),),
-          TopicsMenu(categoryUid: categoryUid, partUid: partUid),
+          TopicsMenu(categoryUid: categoryUid, partUid: partUid, part: part),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

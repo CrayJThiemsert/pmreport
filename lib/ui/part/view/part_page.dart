@@ -11,8 +11,9 @@ import 'package:preventive_maintenance_repository/preventive_maintenance_reposit
 class PartPage extends StatelessWidget {
   String categoryUid;
   String partUid;
+  Part part;
 
-  PartPage({this.categoryUid, this.partUid});
+  PartPage({this.categoryUid, this.partUid, this.part});
 
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => PartPage());
@@ -116,7 +117,7 @@ class PartPage extends StatelessWidget {
             ),
           ],
 
-          child: PartMenu(categoryUid: categoryUid, partUid: partUid),
+          child: PartMenu(categoryUid: categoryUid, partUid: partUid, part: part),
         ),
       ),
 

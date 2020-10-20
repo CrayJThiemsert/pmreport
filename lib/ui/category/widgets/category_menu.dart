@@ -14,7 +14,8 @@ import 'package:preventive_maintenance_repository/preventive_maintenance_reposit
 
 class CategoryMenu extends StatelessWidget {
   String categoryUid;
-  CategoryMenu({Key key, this.categoryUid}) : super(key: key);
+  Category category;
+  CategoryMenu({Key key, this.categoryUid, this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class CategoryMenu extends StatelessWidget {
             fontSize: 18,
             color: Colors.brown
           ),),
-          PartsMenu(categoryUid: categoryUid,),
+          PartsMenu(categoryUid: categoryUid, category: category),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

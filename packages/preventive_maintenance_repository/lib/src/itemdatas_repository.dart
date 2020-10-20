@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:preventive_maintenance_repository/src/models/item.dart';
+import 'package:preventive_maintenance_repository/src/models/itemdata.dart';
 import 'package:preventive_maintenance_repository/src/models/models.dart';
 
 abstract class ItemDatasRepository {

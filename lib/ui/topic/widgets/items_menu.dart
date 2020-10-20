@@ -52,6 +52,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
                 itemBuilder: (BuildContext context, int index) {
                   // final item = (items.length == 0) ? templateItems[index] : items[index];
                   final item = items[index];
+                  item.topic = topic;
                   return Column(
 
                     children: [
@@ -245,6 +246,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
               inputType: item.headers[i].inputType,
               key: itemData.uid,
               content: itemData.value,
+              item: item,
             );
             // DialogUtils().showMessageDialog(
             //   context,
