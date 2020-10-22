@@ -52,7 +52,7 @@ class HeaderEntity extends Equatable {
     return {
       "id": id,
       "uid": uid,
-      "idex": index,
+      "index": index,
       "name": name,
       "inputType": inputType,
     };

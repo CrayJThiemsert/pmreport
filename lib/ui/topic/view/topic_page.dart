@@ -56,6 +56,15 @@ class TopicPage extends StatelessWidget {
                 // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
             },
           ),
+          BlocProvider<ItemDatasBloc>(
+            create: (context) {
+              print('************ call load items ***********');
+              return ItemDatasBloc(
+                itemDatasRepository: FirebaseItemDatasRepository(),
+              );
+              // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
+            },
+          ),
         ],
         child: BlocBuilder<TopicsBloc, TopicsState>(
           builder: (context, state) {
@@ -120,28 +129,28 @@ class TopicPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<TopicsBloc>(
-              create: (context) {
-                print('************ call load topics ***********');
-                return TopicsBloc(
-                  topicsRepository: FirebaseTopicsRepository(),
-                )..add(LoadTopics(categoryUid, partUid));
-              },
-            ),
-            BlocProvider<PartsBloc>(
-              create: (context) {
-                print('************ call load parts ***********');
-                return PartsBloc(
-                  partsRepository: FirebasePartsRepository(),
-                )..add(LoadParts(categoryUid));
-              },
-            ),
+            // BlocProvider<TopicsBloc>(
+            //   create: (context) {
+            //     print('************ call load topics ***********');
+            //     return TopicsBloc(
+            //       topicsRepository: FirebaseTopicsRepository(),
+            //     )..add(LoadTopics(categoryUid, partUid));
+            //   },
+            // ),
+            // BlocProvider<PartsBloc>(
+            //   create: (context) {
+            //     print('************ call load parts ***********');
+            //     return PartsBloc(
+            //       partsRepository: FirebasePartsRepository(),
+            //     )..add(LoadParts(categoryUid));
+            //   },
+            // ),
             BlocProvider<CategoriesBloc>(
               create: (context) {
                 print('************ call load categories ***********');
                 return CategoriesBloc(
                   categoriesRepository: FirebaseCategoriesRepository(),
-                )..add(LoadCategories());
+                );
               },
 
             ),
@@ -154,9 +163,17 @@ class TopicPage extends StatelessWidget {
                 // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
               },
             ),
+            BlocProvider<ItemDatasBloc>(
+                create: (context) {
+                  print('************ call prepare for add/update item datas ***********');
+                  return ItemDatasBloc(
+                    itemDatasRepository: FirebaseItemDatasRepository(),
+                  );
+                },
+            ),
           ],
-
-          child: TopicMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid, topic: topic,),
+          // child: buildContainer(context),
+          child: TopicMenu(categoryUid: categoryUid, partUid: partUid, topicUid: topicUid, topic: topic, itemDatasBloc: BlocProvider.of<ItemDatasBloc>(context),),
         ),
       ),
 
@@ -176,5 +193,10 @@ class TopicPage extends StatelessWidget {
       // ),
       // ),
     );
+  }
+
+  Container buildContainer(BuildContext context) {
+    final itemDatasBloc = BlocProvider.of<ItemDatasBloc>(context);
+    return Container();
   }
 }

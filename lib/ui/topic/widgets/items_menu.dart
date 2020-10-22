@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:pmreport/blocs/blocs.dart';
+import 'package:pmreport/blocs/itemdatas/itemdatas.dart';
 import 'package:pmreport/blocs/items/items_bloc.dart';
 import 'package:pmreport/blocs/parts/parts.dart';
 import 'package:pmreport/blocs/topics/topics_bloc.dart';
@@ -17,130 +18,151 @@ class ItemsMenu extends StatefulWidget {
   String partUid;
   String topicUid;
   Topic topic;
-  ItemsMenu({Key key, this.categoryUid, this.partUid, this.topicUid, this.topic}) : super(key: key);
+  ItemDatasBloc itemDatasBloc;
+  ItemsMenu({Key key, this.categoryUid, this.partUid, this.topicUid, this.topic, this.itemDatasBloc}) : super(key: key);
 
   @override
-  _ItemsMenuState createState() => _ItemsMenuState(topic: this.topic);
+  _ItemsMenuState createState() => _ItemsMenuState(topic: this.topic, itemDatasBloc: this.itemDatasBloc);
 }
 
 class _ItemsMenuState extends State<ItemsMenu> {
   Topic topic;
-  _ItemsMenuState({Topic topic}) :
-        this.topic = topic;
+  ItemDatasBloc itemDatasBloc;
+  _ItemsMenuState({Topic topic, ItemDatasBloc itemDatasBloc}) :
+        this.topic = topic,
+        this.itemDatasBloc = itemDatasBloc;
 
   @override
   Widget build(BuildContext context) {
+    // BlocProvider<ItemDatasBloc>(
+    //   create: (context) {
+    //     print('************ call prepare for add/update item datas ***********');
+    //     return ItemDatasBloc(
+    //       itemDatasRepository: FirebaseItemDatasRepository(),
+    //     );
+    //     // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
+    //   },
+    // ),
+    // return BlocProvider<ItemDatasBloc>(
+    //   create: (context) {
+    //     print('************ call prepare for add/update item datas ***********');
+    //     return ItemDatasBloc(
+    //       itemDatasRepository: FirebaseItemDatasRepository(),
+    //     );
+    //   },
+    //   child: BlocBuilder<ItemsBloc, ItemsState>(
     return BlocBuilder<ItemsBloc, ItemsState>(
-      builder: (context, state) {
+        builder: (context, state) {
 
-        if(state is ItemsLoading) {
-          return LoadingIndicator();
-        } else if(state is ItemsNotLoaded) {
-          return Container(
-            child: Text('Data not found'),
-          );
-        } else if(state is ItemsLoaded) {
-
-          final items = state.items;
-
-          if(items.length > 0) {
+          if(state is ItemsLoading) {
+            return LoadingIndicator();
+          } else if(state is ItemsNotLoaded) {
             return Container(
-              height: displayHeight(context) * 0.6,
-              width: displayWidth(context),
-              color: Colors.lightGreen[50],
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  // final item = (items.length == 0) ? templateItems[index] : items[index];
-                  final item = items[index];
-                  item.topic = topic;
-                  return Column(
+              child: Text('Data not found'),
+            );
+          } else if(state is ItemsLoaded) {
 
-                    children: [
-                      // Image.asset(
-                      //   'assets/${categoryUid}_h96.png',
-                      //   fit: BoxFit.fitHeight,
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 0,),
+            final items = state.items;
 
-                        child: Container(
-                          height: displayHeight(context) * 0.5,
-                          width: displayWidth(context),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.amber[600],
-                              width: 2.0,
+            if(items.length > 0) {
+              return Container(
+                height: displayHeight(context) * 0.6,
+                width: displayWidth(context),
+                color: Colors.lightGreen[50],
+                child: Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    // final item = (items.length == 0) ? templateItems[index] : items[index];
+                    final item = items[index];
+                    item.topic = topic;
+                    return Column(
+
+                      children: [
+                        // Image.asset(
+                        //   'assets/${categoryUid}_h96.png',
+                        //   fit: BoxFit.fitHeight,
+                        // ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0,),
+
+                          child: Container(
+                            height: displayHeight(context) * 0.5,
+                            width: displayWidth(context),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.amber[600],
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.brown[400],
+                              gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [Colors.brown[400], Colors.brown[50]]
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.brown[400],
-                            gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [Colors.brown[400], Colors.brown[50]]
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
-                              children:
-                              buildDataArea(context, item),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children:
+                                buildDataArea(context, item),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-                autoplay: false,
-                // itemCount: (items.length == 0) ? templateItems.length : items.length,
-                itemCount: items.length,
-                itemWidth: 300.0,
-                itemHeight: 400.0,
-                layout: SwiperLayout.TINDER,
-                pagination: new SwiperPagination(
-                    margin: new EdgeInsets.all(0.0),
-                    builder: new SwiperCustomPagination(builder:
-                        (BuildContext context, SwiperPluginConfig config) {
-                      return DotSwiperPaginationBuilder(
-                          color: Colors.black12,
-                          activeColor: Colors.brown,
-                          size: 5.0,
-                          activeSize: 10.0
-                      ).build(context, config);
-                    }
-                    )
-                ),
-                control: new SwiperControl(color: Colors.redAccent),
-              ),
-            );
-          } else {
-            // DialogUtils().showMessageDialog(
-            //   context,
-            //   'Message',
-            //   'Item data not found.',
-            //   'OK',
-            // );
-            return AlertDialog(
-              title: new Text("Message - [${topic.platform}]"),
-              content: new Text("Item data not found."),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                new FlatButton(
-                  child: new Text("Close"),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop(false);
+                      ],
+                    );
                   },
+                  autoplay: false,
+                  // itemCount: (items.length == 0) ? templateItems.length : items.length,
+                  itemCount: items.length,
+                  itemWidth: 300.0,
+                  itemHeight: 400.0,
+                  layout: SwiperLayout.TINDER,
+                  pagination: new SwiperPagination(
+                      margin: new EdgeInsets.all(0.0),
+                      builder: new SwiperCustomPagination(builder:
+                          (BuildContext context, SwiperPluginConfig config) {
+                        return DotSwiperPaginationBuilder(
+                            color: Colors.black12,
+                            activeColor: Colors.brown,
+                            size: 5.0,
+                            activeSize: 10.0
+                        ).build(context, config);
+                      }
+                      )
+                  ),
+                  control: new SwiperControl(color: Colors.redAccent),
                 ),
-              ],
-            );
+              );
+            } else {
+              // DialogUtils().showMessageDialog(
+              //   context,
+              //   'Message',
+              //   'Item data not found.',
+              //   'OK',
+              // );
+              return AlertDialog(
+                title: new Text("Message - [${topic.platform}]"),
+                content: new Text("Item data not found."),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: new Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop(false);
+                    },
+                  ),
+                ],
+              );
 
-            // return Container(
-            //   child: Text('Item data not found'),
-            // );
+              // return Container(
+              //   child: Text('Item data not found'),
+              // );
+            }
           }
-        }
-      },
+        },
+      // ),
     );
   }
 
@@ -185,11 +207,17 @@ class _ItemsMenuState extends State<ItemsMenu> {
     // );
   }
 
-  ItemData getItemData(String headerUid, Item item) {
-    ItemData dataValue = ItemData(uid: headerUid);
+  ItemData getItemData(Header header, Item item) {
+    ItemData dataValue = ItemData(
+        id: header.uid,
+        uid: header.uid,
+        index: header.index,
+        name: header.name,
+        inputType: header.inputType
+    );
     for(int i=0; i<item.itemDatas.length;i++) {
-      if(item.itemDatas[i].uid == headerUid) {
-        dataValue = item.itemDatas[i];
+      if(item.itemDatas[i].uid == header.uid) {
+        dataValue.value = item.itemDatas[i].value;
         return dataValue;
       }
     }
@@ -197,7 +225,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
   }
 
   Widget buildDataItem(BuildContext context, Item item, int i) {
-    ItemData itemData = getItemData(item.headers[i].uid, item);
+    ItemData itemData = getItemData(item.headers[i], item);
     print('<<<${itemData}>>> item no.${item.index} [${item.uid}] header[${item.headers[i].uid}');
 
     return Padding(
@@ -247,6 +275,8 @@ class _ItemsMenuState extends State<ItemsMenu> {
               key: itemData.uid,
               content: itemData.value,
               item: item,
+              itemData: itemData,
+              itemDatasBloc: itemDatasBloc,
             );
             // DialogUtils().showMessageDialog(
             //   context,

@@ -18,6 +18,10 @@ class ItemDatasBloc extends Bloc<ItemDatasEvent, ItemDatasState> {
       : assert(itemDatasRepository != null),
         _itemDatasRepository = itemDatasRepository,
         super(ItemDatasLoading());
+    //     super(const ItemDatasState.unknown()) {
+    // _itemDatasSubscription = _itemDatasRepository.listen(
+    //       (itemData) => add(AddItemData(itemData)),
+    // );
 
   @override
   Stream<ItemDatasState> mapEventToState(

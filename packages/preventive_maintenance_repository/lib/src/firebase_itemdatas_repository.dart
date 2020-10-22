@@ -16,6 +16,9 @@ class FirebaseItemDatasRepository implements ItemDatasRepository {
   @override
   Future<void> addNewItemData(String categoryUid, String partUid, Topic topic, Item item, ItemData itemData) {
     String query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
+    print('addNewItemData===>');
+    print('query[${query}]');
+    print('itemData[${itemData}]');
     final itemsDataLoadCollection = FirebaseFirestore.instance.collection(query);
     return itemsDataLoadCollection
         .doc(itemData.id)

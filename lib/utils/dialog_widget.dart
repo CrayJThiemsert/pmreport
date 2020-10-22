@@ -3,7 +3,9 @@ import 'dart:ui' as ui show Gradient, TextBox, lerpDouble, Image;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pmreport/blocs/itemdatas/itemdatas.dart';
 import 'package:pmreport/utils/input_type_form.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
@@ -191,7 +193,9 @@ class DialogUtils {
     String key,
     String inputType,
     Item item,
-    User byUser
+    ItemData itemData,
+    User byUser,
+    ItemDatasBloc itemDatasBloc
   }) {
     print('Drawing input dialog...');
     String _value = content;
@@ -204,33 +208,38 @@ class DialogUtils {
             scale: a1.value,
             child: Opacity(
               opacity: a1.value,
-              child: AlertDialog(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.limeAccent,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                backgroundColor: Colors.grey[800],
-                title: Text(title,
-                  style: TextStyle(
-                    fontFamily: 'K2D-ExtraBold',
-                    color: Colors.white,
-                  ),
-                ),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    // buildInputTypeField(content, yesFunc, inputType, _value),
-                    Column(
+              child: BlocProvider(
+                create: (_) => ItemDatasBloc(),
+                child: Builder(
+                  builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.limeAccent,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    backgroundColor: Colors.grey[800],
+                    title: Text(title,
+                      style: TextStyle(
+                        fontFamily: 'K2D-ExtraBold',
+                        color: Colors.white,
+                      ),
+                    ),
+                    content: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        InputTypeForm(uid: _key, yesFunc: yesFunc, yesText: yesText, noText: noText, inputType: inputType, value: _value, item: item,),
+                      children: <Widget>[
+                        // buildInputTypeField(content, yesFunc, inputType, _value),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InputTypeForm(uid: _key, yesFunc: yesFunc, yesText: yesText, noText: noText, inputType: inputType, value: _value, item: item, itemData: itemData, itemDatasBloc: itemDatasBloc,),
+                          ],
+                        ),
+
                       ],
                     ),
-
-                  ],
+                  ),
                 ),
               ),
             ),

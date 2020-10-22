@@ -9,7 +9,7 @@ class ItemData {
   final int index;
   final String name;
   final String inputType;
-  final String value;
+  String value;
 
   ItemData({String id, String uid, int index = 0, String name = '', String inputType = '', String value = ''})
     : this.index = index ?? 0,

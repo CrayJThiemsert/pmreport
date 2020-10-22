@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/itemdatas/itemdatas_bloc.dart';
+import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 
 
 import 'package:pmreport/utils/constants.dart';
@@ -16,14 +17,16 @@ class InputTypeForm extends StatefulWidget {
   String inputType;
   String value;
   Item item;
+  ItemData itemData;
+  ItemDatasBloc itemDatasBloc;
 
   InputTypeForm(
-      {Key key, this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item})
+      {Key key, this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item, this.itemData, this.itemDatasBloc})
       : super(key: key);
 
   @override
   _InputTypeFormState createState() => _InputTypeFormState(
-      this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item);
+      this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item, this.itemData, this.itemDatasBloc);
 }
 
 class _InputTypeFormState extends State<InputTypeForm>
@@ -35,16 +38,20 @@ class _InputTypeFormState extends State<InputTypeForm>
   String inputType;
   String _value;
   Item item;
+  ItemData itemData;
+  ItemDatasBloc itemDatasBloc;
 
   _InputTypeFormState(
-      String uid, String yesFunc, String yesText, String noText, String inputType, String value, Item item)
+      String uid, String yesFunc, String yesText, String noText, String inputType, String value, Item item, ItemData itemData, ItemDatasBloc itemDatasBloc)
       : this.uid = uid == 'n/a' ? '' : uid,
         this.yesFunc = yesFunc,
         this.yesText = yesText,
         this.noText = noText,
         this.inputType = inputType,
         this._value = value,
-        this.item = item;
+        this.item = item,
+        this.itemData = itemData,
+        this.itemDatasBloc = itemDatasBloc;
 
   bool isSelected = false;
   List<String> chipsList = List<String>();
@@ -205,13 +212,32 @@ class _InputTypeFormState extends State<InputTypeForm>
       ],
     ));
 
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: _widgets,
-      ),
-    );
+    // return BlocBuilder<ItemDatasBloc, ItemDatasState> (
+    //   builder: (context, state) {
+      //   if(state is ItemDatasLoading) {
+      //     return LoadingIndicator();
+      //   } else if(state is ItemDatasNotLoaded) {
+      //   } else {
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: _widgets,
+            ),
+          );
+        // }
+      // },
+    // );
+    //   BlocProvider(
+    //   create: (BuildContext context) => ItemDatasBloc(itemDatasRepository: FirebaseItemDatasRepository()),
+    //   child: SingleChildScrollView(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       // crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: _widgets,
+    //     ),
+    //   ),
+    // );
   }
 
   FilterChip buildFilterChip({String chipName, int index}) {
@@ -229,14 +255,70 @@ class _InputTypeFormState extends State<InputTypeForm>
 
   doFunctionWithValue(String value, List<bool> chipsIsSelectedList) {
     print('item: ${item}');
+    print('itemData: ${itemData}');
     print('value: ${value}');
-    print('chipsIsSelectedList: ${chipsIsSelectedList}');
+    print('itemData.inputType: ${itemData.inputType}');
+    print('itemData.inputType: ${itemData.inputType}');
+    print('chipsIsSelectedList: ${chipsIsSelectedList} = ${chipsIsSelectedList.toString()}');
+
+
+    switch (itemData.inputType) {
+      case 'integer':
+      case 'decimal':
+      case 'text':
+        {
+          itemData.value = value;
+          break;
+        }
+
+      case 'single_options_ok':
+      case 'single_options_testing':
+      case 'multiple_options_condition':
+      case 'multiple_options_lightning_arrester':
+      case 'multiple_options_drop_fuse_cut_out':
+      case 'multiple_options_connection':
+      case 'multiple_options_ground':
+        {
+          if(chipsIsSelectedList.length > 0) {
+            itemData.value = chipsIsSelectedList.toString();
+            itemData.value = itemData.value.replaceAll('[', '').replaceAll(']', '');
+          }
+          break;
+        }
+
+    }
+    print('value: ${itemData.value}');
+
+    // ItemData itemData = ItemData(
+    //   uid: uid,
+    //   value: value,
+    //   index:
+    // );
+
+    // final itemDatasBloc = BlocProvider.of<ItemDatasBloc>(context);
+    //
+    // if(itemDatasBloc != null) {
+      itemDatasBloc.add(
+        AddItemData(item.topic.part.category.uid,
+            item.topic.part.uid,
+            item.topic.uid,
+            item.topic,
+            item,
+            itemData),
+      );
+    // }
+
 
     // BlocProvider<ItemDatasBloc>(
     //   create: (context) {
     //     return ItemDatasBloc(
     //       itemDatasRepository: FirebaseItemDatasRepository(),
-    //     )..add(AddItemData(categoryUid, partUid, topicUid, topic, item, itemData));
+    //     )..add(AddItemData(item.topic.part.category.uid,
+    //         item.topic.part.uid,
+    //         item.topic.uid,
+    //         item.topic,
+    //         item,
+    //         itemData));
     //   },
     // );
 
