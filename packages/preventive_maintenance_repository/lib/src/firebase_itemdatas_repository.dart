@@ -9,12 +9,15 @@ import 'models/topic.dart';
 class FirebaseItemDatasRepository implements ItemDatasRepository {
   // for transaction
   final itemDatasCollection = FirebaseFirestore.instance.collection('templates/ui/sites/nachuak_solar_power_plant/parts');
-  // for load list
+  // for add data
+  bool _added = false;
+
 
   // final itemsCollection = FirebaseFirestore.instance.collection('items');
 
   @override
   Future<void> addNewItemData(String categoryUid, String partUid, Topic topic, Item item, ItemData itemData) {
+    _added = false;
     String query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
     print('addNewItemData===>');
     print('query[${query}]');
@@ -22,7 +25,8 @@ class FirebaseItemDatasRepository implements ItemDatasRepository {
     final itemsDataLoadCollection = FirebaseFirestore.instance.collection(query);
     return itemsDataLoadCollection
         .doc(itemData.id)
-        .set(itemData.toEntity().toDocument(), SetOptions(merge: true));
+        .set(itemData.toEntity().toDocument(), SetOptions(merge: true))
+        .then((value) => _added = true);
     // return itemsDataLoadCollection.add(itemData.toEntity().toDocument());
   }
 
@@ -100,17 +104,26 @@ class FirebaseItemDatasRepository implements ItemDatasRepository {
 
   @override
   Stream<List<ItemData>> itemDatasStream(String categoryUid, String partUid, Topic topic, Item item) {
-    String query = 'templates/ui/sites/nachuak_solar_power_plant/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list';
-    if(topic.platform != 'mobile') {
-      query = 'templates/ui/topics/${topic.header}/items_list';
-    }
+    String query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
     final itemsLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
-    // final itemsLoadCollection = FirebaseFirestore.instance.collection('templates/ui/topics/${topic.header}/items_list').orderBy('index', descending: false);
 
     return itemsLoadCollection.snapshots().map((snapshot) {
       return snapshot.docs
           .map((doc) => ItemData.fromEntity(ItemDataEntity.fromSnapshot(doc)))
           .toList();
+    });
+  }
+
+  @override
+  Stream<ItemData> getItemDataStream(String categoryUid, String partUid, Topic topic, Item item, String itemDataUid) {
+    String query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
+
+    final doc = FirebaseFirestore.instance.collection(query).doc(itemDataUid);
+    return doc.snapshots().map((snapshot) {
+      print('itemDataUid=${itemDataUid}');
+      print('query=${query}');
+      print('snapshot.exists=${snapshot.exists}');
+      return ItemData.fromEntity(ItemDataEntity.fromSnapshot(snapshot));
     });
   }
 

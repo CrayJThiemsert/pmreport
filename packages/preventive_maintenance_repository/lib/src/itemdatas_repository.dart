@@ -11,5 +11,8 @@ abstract class ItemDatasRepository {
   Stream<List<ItemData>> itemDatasStream(String categoryUid, String partUid, Topic topic, Item item);
   Future<List<ItemData>> itemDatasOnce(String categoryUid, String partUid, Topic topic, Item item);
 
+  Stream<ItemData> getItemDataStream(String categoryUid, String partUid, Topic topic, Item item, String itemDataUid);
+
+
   Future<void> updateItemData(ItemData itemData);
 }

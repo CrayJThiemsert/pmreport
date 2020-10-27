@@ -31,29 +31,6 @@ class MeasurePage extends StatelessWidget {
         ],
       ),
 
-      // short but error version ----------------
-      // body: Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: MeasureMenu(),
-      // ),
-      // body: BlocBuilder<CategoriesBloc, CategoriesState>(
-      //     builder: (context, state) {
-      //       if(state is CategoriesLoading) {
-      //         return LoadingIndicator();
-      //       } else if(state is CategoriesNotLoaded) {
-      //         return Container(
-      //           child: Text('Data not found'),
-      //         );
-      //       } else if(state is CategoriesLoaded) {
-      //         return Padding(
-      //               padding: const EdgeInsets.all(8.0),
-      //               child: MeasureMenu(),
-      //             );
-      //       }
-      //     },
-      //   ),
-
-
       // stable version ===================
       body: Padding(
         padding: const EdgeInsets.all(8.0),

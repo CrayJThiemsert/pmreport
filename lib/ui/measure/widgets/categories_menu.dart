@@ -23,6 +23,7 @@ class CategoriesMenu extends StatelessWidget {
           );
         } else if(state is CategoriesLoaded) {
           final categories = state.categories;
+          print('********* Category Loaded *********');
           return buildBottomSwiperMenu(context, categories);
           // return Container(
           //   child: ListView.builder(

@@ -52,7 +52,13 @@ class ItemData {
   }
 
   ItemDataEntity toEntity() {
-    return ItemDataEntity(id, uid, index, name, inputType, value);
+    return ItemDataEntity(
+        id: id,
+        uid: uid,
+        index: index,
+        name: name,
+        inputType: inputType,
+        value: value);
   }
 
   static ItemData fromEntity(ItemDataEntity entity) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/itemdatas/itemdatas_bloc.dart';
+import 'package:pmreport/blocs/items/items.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 
 
@@ -254,6 +255,7 @@ class _InputTypeFormState extends State<InputTypeForm>
   }
 
   doFunctionWithValue(String value, List<bool> chipsIsSelectedList) {
+    print('call doFunctionWithValue ^^^');
     print('item: ${item}');
     print('itemData: ${itemData}');
     print('value: ${value}');
@@ -306,6 +308,16 @@ class _InputTypeFormState extends State<InputTypeForm>
             item,
             itemData),
       );
+
+    // BlocProvider<ItemsBloc>(
+    //   create: (context) {
+    //     print('************ call load items 2 ***********');
+    //     return ItemsBloc(
+    //       itemsRepository: FirebaseItemsRepository(),
+    //     )..add(LoadItems(item.topic.part.category.uid, item.topic.part.uid, item.topic.uid, item.topic));
+    //     // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
+    //   },
+    // );
     // }
 
 
@@ -321,6 +333,8 @@ class _InputTypeFormState extends State<InputTypeForm>
     //         itemData));
     //   },
     // );
+
+
 
     Navigator.of(context, rootNavigator: true).pop(false);
   }

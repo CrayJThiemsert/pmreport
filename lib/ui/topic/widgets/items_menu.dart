@@ -22,35 +22,35 @@ class ItemsMenu extends StatefulWidget {
   ItemsMenu({Key key, this.categoryUid, this.partUid, this.topicUid, this.topic, this.itemDatasBloc}) : super(key: key);
 
   @override
-  _ItemsMenuState createState() => _ItemsMenuState(topic: this.topic, itemDatasBloc: this.itemDatasBloc);
+  _ItemsMenuState createState() => _ItemsMenuState(
+      categoryUid: this.categoryUid,
+      partUid: this.partUid,
+      topicUid: this.topicUid,
+      topic: this.topic,
+      itemDatasBloc: this.itemDatasBloc
+  );
 }
 
 class _ItemsMenuState extends State<ItemsMenu> {
+  String categoryUid;
+  String partUid;
+  String topicUid;
   Topic topic;
   ItemDatasBloc itemDatasBloc;
-  _ItemsMenuState({Topic topic, ItemDatasBloc itemDatasBloc}) :
+  _ItemsMenuState({
+    String categoryUid,
+    String partUid,
+    String topicUid,
+    Topic topic,
+    ItemDatasBloc itemDatasBloc}) :
+        this.categoryUid = categoryUid,
+        this.partUid = partUid,
+        this.topicUid = topicUid,
         this.topic = topic,
         this.itemDatasBloc = itemDatasBloc;
 
   @override
   Widget build(BuildContext context) {
-    // BlocProvider<ItemDatasBloc>(
-    //   create: (context) {
-    //     print('************ call prepare for add/update item datas ***********');
-    //     return ItemDatasBloc(
-    //       itemDatasRepository: FirebaseItemDatasRepository(),
-    //     );
-    //     // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
-    //   },
-    // ),
-    // return BlocProvider<ItemDatasBloc>(
-    //   create: (context) {
-    //     print('************ call prepare for add/update item datas ***********');
-    //     return ItemDatasBloc(
-    //       itemDatasRepository: FirebaseItemDatasRepository(),
-    //     );
-    //   },
-    //   child: BlocBuilder<ItemsBloc, ItemsState>(
     return BlocBuilder<ItemsBloc, ItemsState>(
         builder: (context, state) {
 
@@ -61,7 +61,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
               child: Text('Data not found'),
             );
           } else if(state is ItemsLoaded) {
-
+            print('++++++ ItemsLoaded ++++++');
             final items = state.items;
 
             if(items.length > 0) {
@@ -167,6 +167,9 @@ class _ItemsMenuState extends State<ItemsMenu> {
   }
 
   List<Widget> buildDataArea(BuildContext context, Item item) {
+    // Get itemdata list stream
+    context.bloc<ItemDatasBloc>().add(LoadItemDatas(categoryUid, partUid, topicUid, topic, item));
+
     List<Widget> widgets = new List();
 
     // item index + item name
@@ -226,7 +229,10 @@ class _ItemsMenuState extends State<ItemsMenu> {
 
   Widget buildDataItem(BuildContext context, Item item, int i) {
     ItemData itemData = getItemData(item.headers[i], item);
-    print('<<<${itemData}>>> item no.${item.index} [${item.uid}] header[${item.headers[i].uid}');
+    print('<<<header[${item.headers[i].uid} -> From Item Bloc list${itemData}>>> item no.${item.index} [${item.uid}] ');
+
+    // call a ItemData load stream
+    // context.bloc<ItemDatasBloc>().add(LoadItemData(categoryUid, partUid, topicUid, topic, item, itemData.uid));
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -254,38 +260,98 @@ class _ItemsMenuState extends State<ItemsMenu> {
                       fontWeight: FontWeight.normal
                   ),
                 ),
-                Text(
-                  '${itemData.value}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                BlocBuilder<ItemDatasBloc, ItemDatasState>(
+                  // buildWhen: (previous, current) {
+                  //   if(previous is ItemDataLoaded && current is ItemDataLoaded) {
+                  //     return (previous.itemData != current.itemData);
+                  //   } else {
+                  //     return false;
+                  //   }
+                  //   },
+                  builder: (context, state) {
+                    if (state is ItemDatasLoading) {
+                      print('ItemDatasLoading...');
+                      return LoadingIndicator();
+                    } else if(state is ItemDatasNotLoaded) {
+                      print('ItemDatasNotLoaded...');
+                      return Text(
+                        'Data not found',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    // } else if(state is ItemDataLoaded) {
+                    } else if(state is ItemDatasLoaded) {
+                      print('ItemDatasLoaded...');
+                      print('####i[${i}] ${item.headers[i].name}');
+                      ItemData itemDataStream = getItemDataByUid(item.headers[i].uid, state.itemDatas);
+                      print('>>>itemDataStream=${itemDataStream}');
+                      return Text(
+                        '${itemDataStream.value}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
+                  }
                 ),
               ],
             ),
           ),
           onPressed: () {
             print('hit ${item.headers[i].name}!!');
-            DialogUtils().showInputDialog(
-              context: context,
-              title: 'Input ${item.headers[i].name} Data',
-              yesText: 'Save',
-              noText: 'Cancel',
-              inputType: item.headers[i].inputType,
-              key: itemData.uid,
-              content: itemData.value,
-              item: item,
-              itemData: itemData,
-              itemDatasBloc: itemDatasBloc,
+
+            BlocBuilder<ItemDatasBloc, ItemDatasState>(
+                builder: (context, state) {
+                  if (state is ItemDatasLoading) {
+                    print('ItemDatasLoading...');
+                    DialogUtils().showMessageDialog(
+                      context,
+                      'Message',
+                      'Loading data, please try again. ',
+                      'OK',
+                    );
+                  } else if(state is ItemDatasNotLoaded) {
+                    print('ItemDatasNotLoaded...');
+                    DialogUtils().showMessageDialog(
+                      context,
+                      'Message',
+                      'Data not found.',
+                      'OK',
+                    );
+                  } else if(state is ItemDataLoaded) {
+                    print('ItemDataLoaded...');
+                    print('>>>state.itemDatas.uid=${state.itemData.uid}');
+                    DialogUtils().showInputDialog(
+                      context: context,
+                      title: 'Input ${item.headers[i].name} Data',
+                      yesText: 'Save',
+                      noText: 'Cancel',
+                      inputType: item.headers[i].inputType,
+                      key: state.itemData.uid,
+                      content: state.itemData.value,
+                      item: item,
+                      itemData: state.itemData,
+                      itemDatasBloc: itemDatasBloc,
+                    );
+                  }
+                }
             );
-            // DialogUtils().showMessageDialog(
-            //   context,
-            //   'Message',
-            //   'Input Item data here.',
-            //   'OK',
-            // );
+
           },
         ),
     );
+  }
+
+  ItemData getItemDataByUid(String uid, List<ItemData> itemDatas) {
+    ItemData result = ItemData(uid: uid, value: '');
+    for(int i=0; i< itemDatas.length;i++) {
+      if(uid == itemDatas[i].uid) {
+        return itemDatas[i];
+      }
+    }
+    return result;
   }
 }

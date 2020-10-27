@@ -24,6 +24,23 @@ class LoadItemDatas extends ItemDatasEvent {
   String toString() => 'LoadItemDatas { categoryUid: $categoryUid, partUid: $partUid, topicUid: $topicUid, topic: $topic, item: ${item} }';
 }
 
+class LoadItemData extends ItemDatasEvent {
+  final String categoryUid;
+  final String partUid;
+  final String topicUid;
+  final Topic topic;
+  final Item item;
+  final String itemDataUid;
+
+  const LoadItemData(this.categoryUid, this.partUid, this.topicUid, this.topic, this.item, this.itemDataUid);
+
+  @override
+  List<Object> get props => [categoryUid, partUid, topicUid, topic, item, itemDataUid];
+
+  @override
+  String toString() => 'LoadItemData { itemDataUid: $itemDataUid, categoryUid: $categoryUid, partUid: $partUid, topicUid: $topicUid, topic: $topic, item: ${item} }';
+}
+
 class AddItemData extends ItemDatasEvent {
   final String categoryUid;
   final String partUid;
@@ -84,4 +101,13 @@ class ItemDatasUpdated extends ItemDatasEvent {
 
   @override
   List<Object> get props => [itemDatas];
+}
+
+class ItemDataUpdated extends ItemDatasEvent {
+  final ItemData itemData;
+
+  const ItemDataUpdated(this.itemData);
+
+  @override
+  List<Object> get props => [itemData];
 }

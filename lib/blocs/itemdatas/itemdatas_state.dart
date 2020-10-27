@@ -2,10 +2,12 @@ part of 'itemdatas_bloc.dart';
 
 @immutable
 abstract class ItemDatasState extends Equatable {
-  const ItemDatasState();
+  final String itemDataUid;
+  const ItemDatasState({this.itemDataUid});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [itemDataUid];
+
 }
 
 class ItemDatasLoading extends ItemDatasState {}
@@ -20,6 +22,18 @@ class ItemDatasLoaded extends ItemDatasState {
 
   @override
   String toString() => 'ItemDatasLoaded { itemDatas: $itemDatas }';
+}
+
+class ItemDataLoaded extends ItemDatasState {
+  final ItemData itemData;
+
+  const ItemDataLoaded({this.itemData});
+
+  @override
+  List<Object> get props => [itemData];
+
+  @override
+  String toString() => 'ItemDataLoaded { itemData: $itemData }';
 }
 
 class ItemDatasNotLoaded extends ItemDatasState {}

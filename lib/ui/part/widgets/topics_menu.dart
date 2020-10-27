@@ -67,7 +67,11 @@ class TopicsMenu extends StatelessWidget {
                   String uri = '/category/${categoryUid}/part/${partUid}/topic/${topics[index].uid}';
                   topics[index].part = part;
                   print('${uri} pressed...');
-                  Navigator.pushNamed(context, uri, arguments: topics[index]);
+                  Navigator.pushNamed(context, uri, arguments: topics[index]).then((value) {
+                      print('xxx $value');
+
+                  });
+
                 },
               );
             },

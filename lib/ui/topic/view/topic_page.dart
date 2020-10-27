@@ -61,6 +61,7 @@ class TopicPage extends StatelessWidget {
               print('************ call load items ***********');
               return ItemDatasBloc(
                 itemDatasRepository: FirebaseItemDatasRepository(),
+                itemsBloc: context.bloc<ItemsBloc>(),
               );
               // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
             },
@@ -168,6 +169,7 @@ class TopicPage extends StatelessWidget {
                   print('************ call prepare for add/update item datas ***********');
                   return ItemDatasBloc(
                     itemDatasRepository: FirebaseItemDatasRepository(),
+                    itemsBloc: context.bloc<ItemsBloc>(),
                   );
                 },
             ),

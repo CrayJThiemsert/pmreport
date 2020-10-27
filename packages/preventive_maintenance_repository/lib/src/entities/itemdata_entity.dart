@@ -9,7 +9,7 @@ class ItemDataEntity extends Equatable {
   final String inputType;
   final String value;
 
-  const ItemDataEntity(this.id, this.uid, this.index, this.name, this.inputType, this.value);
+  const ItemDataEntity({this.id, this.uid, this.index, this.name, this.inputType, this.value});
 
   @override
   List<Object> get props => [id, uid, index, name, inputType, value];
@@ -32,24 +32,30 @@ class ItemDataEntity extends Equatable {
 
   static ItemDataEntity fromJson(Map<String, Object> json) {
     return ItemDataEntity(
-      json["id"] as String,
-      json["uid"] as String,
-      json["index"] as int,
-      json["name"] as String,
-      json["inputType"] as String,
-      json["value"] as String,
+      id: json["id"] as String,
+      uid: json["uid"] as String,
+      index: json["index"] as int,
+      name: json["name"] as String,
+      inputType: json["inputType"] as String,
+      value: json["value"] as String,
     );
   }
 
   static ItemDataEntity fromSnapshot(DocumentSnapshot snap) {
-    return ItemDataEntity(
-      snap.id ?? '',
-      snap.data()['uid'] ?? '',
-      snap.data()['index'] ?? '',
-      snap.data()['name'] ?? '',
-      snap.data()['inputType'] ?? '',
-      snap.data()['value'] ?? '',
-    );
+    if(snap.exists) {
+      print('snap.data().isEmpty=${snap.data().isEmpty}');
+      print('snap.data().length=${snap.data().length}');
+      return ItemDataEntity(
+        id: snap.id ?? '',
+        uid: snap.data()['uid'] ?? '',
+        index: snap.data()['index'] ?? '',
+        name: snap.data()['name'] ?? '',
+        inputType: snap.data()['inputType'] ?? '',
+        value: snap.data()['value'] ?? '',
+      );
+    } else {
+      return ItemDataEntity();
+    }
   }
 
   Map<String, Object> toDocument() {
