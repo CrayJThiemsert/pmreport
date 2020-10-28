@@ -50,6 +50,12 @@ class _ItemsMenuState extends State<ItemsMenu> {
         this.itemDatasBloc = itemDatasBloc;
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ItemsBloc, ItemsState>(
         builder: (context, state) {
@@ -63,7 +69,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
           } else if(state is ItemsLoaded) {
             print('++++++ ItemsLoaded ++++++');
             final items = state.items;
-
+            print('items.length[${items.length}]');
             if(items.length > 0) {
               return Container(
                 height: displayHeight(context) * 0.6,
@@ -73,6 +79,11 @@ class _ItemsMenuState extends State<ItemsMenu> {
                   itemBuilder: (BuildContext context, int index) {
                     // final item = (items.length == 0) ? templateItems[index] : items[index];
                     final item = items[index];
+
+                    print('**Caller index[${index}] - item.index[${item.index}] - item.uid[${item.uid}]');
+                    // Get itemdata list stream
+                    context.bloc<ItemDatasBloc>().add(LoadItemDatas(categoryUid, partUid, topicUid, topic, item));
+
                     item.topic = topic;
                     return Column(
 
@@ -167,9 +178,6 @@ class _ItemsMenuState extends State<ItemsMenu> {
   }
 
   List<Widget> buildDataArea(BuildContext context, Item item) {
-    // Get itemdata list stream
-    context.bloc<ItemDatasBloc>().add(LoadItemDatas(categoryUid, partUid, topicUid, topic, item));
-
     List<Widget> widgets = new List();
 
     // item index + item name
@@ -187,7 +195,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
         }
         break;
         case 1: { // right
-          print('right[${i}] ${item.name}');
+          print('right[${i}] ${item.headers[i].uid}');
           Widget rightWidget = buildDataItem(context, item, i);
           widgets.add(rightWidget);
         }
@@ -233,7 +241,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
 
     // call a ItemData load stream
     // context.bloc<ItemDatasBloc>().add(LoadItemData(categoryUid, partUid, topicUid, topic, item, itemData.uid));
-
+    ItemData itemDataStream = ItemData(uid: itemData.uid);
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Bounce(
@@ -261,13 +269,14 @@ class _ItemsMenuState extends State<ItemsMenu> {
                   ),
                 ),
                 BlocBuilder<ItemDatasBloc, ItemDatasState>(
-                  // buildWhen: (previous, current) {
+                  buildWhen: (previous, current) {
+                    (previous.itemDataUid != current.itemDataUid);
                   //   if(previous is ItemDataLoaded && current is ItemDataLoaded) {
                   //     return (previous.itemData != current.itemData);
                   //   } else {
                   //     return false;
                   //   }
-                  //   },
+                    },
                   builder: (context, state) {
                     if (state is ItemDatasLoading) {
                       print('ItemDatasLoading...');
@@ -284,8 +293,8 @@ class _ItemsMenuState extends State<ItemsMenu> {
                     // } else if(state is ItemDataLoaded) {
                     } else if(state is ItemDatasLoaded) {
                       print('ItemDatasLoaded...');
-                      print('####i[${i}] ${item.headers[i].name}');
-                      ItemData itemDataStream = getItemDataByUid(item.headers[i].uid, state.itemDatas);
+                      print('#### item.uid[${item.uid}]=> i[${i}] ${item.headers[i].uid}  - state.itemDatas.length[${state.itemDatas.length}]');
+                      itemDataStream = getItemDataByUid(item.uid, item.headers[i].uid, state.itemDatas);
                       print('>>>itemDataStream=${itemDataStream}');
                       return Text(
                         '${itemDataStream.value}',
@@ -301,54 +310,57 @@ class _ItemsMenuState extends State<ItemsMenu> {
             ),
           ),
           onPressed: () {
-            print('hit ${item.headers[i].name}!!');
+            print('hit ${itemDataStream.uid}!!');
 
-            BlocBuilder<ItemDatasBloc, ItemDatasState>(
-                builder: (context, state) {
-                  if (state is ItemDatasLoading) {
-                    print('ItemDatasLoading...');
-                    DialogUtils().showMessageDialog(
-                      context,
-                      'Message',
-                      'Loading data, please try again. ',
-                      'OK',
-                    );
-                  } else if(state is ItemDatasNotLoaded) {
-                    print('ItemDatasNotLoaded...');
-                    DialogUtils().showMessageDialog(
-                      context,
-                      'Message',
-                      'Data not found.',
-                      'OK',
-                    );
-                  } else if(state is ItemDataLoaded) {
-                    print('ItemDataLoaded...');
-                    print('>>>state.itemDatas.uid=${state.itemData.uid}');
+            // BlocBuilder<ItemDatasBloc, ItemDatasState>(
+            //     builder: (context, state) {
+            //       if (state is ItemDatasLoading) {
+            //         print('ItemDatasLoading...');
+            //         DialogUtils().showMessageDialog(
+            //           context,
+            //           'Message',
+            //           'Loading data, please try again. ',
+            //           'OK',
+            //         );
+            //       } else if(state is ItemDatasNotLoaded) {
+            //         print('ItemDatasNotLoaded...');
+            //         DialogUtils().showMessageDialog(
+            //           context,
+            //           'Message',
+            //           'Data not found.',
+            //           'OK',
+            //         );
+            //       } else if(state is ItemDataLoaded) {
+                    print('>>>itemDataStream.uid=${itemDataStream.uid}');
                     DialogUtils().showInputDialog(
                       context: context,
                       title: 'Input ${item.headers[i].name} Data',
                       yesText: 'Save',
                       noText: 'Cancel',
                       inputType: item.headers[i].inputType,
-                      key: state.itemData.uid,
-                      content: state.itemData.value,
+                      key: itemDataStream.uid,
+                      content: itemDataStream.value,
                       item: item,
-                      itemData: state.itemData,
+                      itemData: itemDataStream,
                       itemDatasBloc: itemDatasBloc,
                     );
-                  }
-                }
-            );
+                //   }
+                // }
+            // );
 
           },
         ),
     );
   }
 
-  ItemData getItemDataByUid(String uid, List<ItemData> itemDatas) {
-    ItemData result = ItemData(uid: uid, value: '');
+  ItemData getItemDataByUid(String itemUid, String itemDataUid, List<ItemData> itemDatas) {
+    ItemData result = ItemData(uid: itemDataUid, value: '');
+    print('getItemDataByUid=======uid${itemDataUid}');
     for(int i=0; i< itemDatas.length;i++) {
-      if(uid == itemDatas[i].uid) {
+      print('${itemUid} <==> ${itemDatas[i].itemUid}');
+      print('itemDataUid[${itemDataUid}] <--->itemDatas[i].uid[${itemDatas[i].uid}]');
+      if(itemDataUid == itemDatas[i].uid && itemUid == itemDatas[i].itemUid) {
+        print('match!!!!!');
         return itemDatas[i];
       }
     }

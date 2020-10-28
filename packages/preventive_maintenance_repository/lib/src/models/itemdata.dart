@@ -10,16 +10,18 @@ class ItemData {
   final String name;
   final String inputType;
   String value;
+  String itemUid;
 
-  ItemData({String id, String uid, int index = 0, String name = '', String inputType = '', String value = ''})
+  ItemData({String id, String uid, int index = 0, String name = '', String inputType = '', String value = '', String itemUid = '', })
     : this.index = index ?? 0,
       this.name = name ?? '',
       this.id = id,
       this.uid = uid,
       this.inputType = inputType,
-      this.value = value;
+      this.value = value,
+      this.itemUid = itemUid;
 
-  ItemData copyWith({String id, String uid, int index, String name, String inputType, String value}) {
+  ItemData copyWith({String id, String uid, int index, String name, String inputType, String value, String itemUid}) {
     return ItemData(
       id: id ?? this.id,
       uid: uid ?? this.uid,
@@ -27,12 +29,13 @@ class ItemData {
       name: name ?? this.name,
       inputType: name ?? this.inputType,
       value: value ?? this.value,
+      itemUid: itemUid ?? this.itemUid,
     );
   }
 
   @override
   int get hashCode =>
-      id.hashCode ^ uid.hashCode ^ index.hashCode ^ name.hashCode ^ inputType.hashCode ^ value.hashCode;
+      id.hashCode ^ uid.hashCode ^ index.hashCode ^ name.hashCode ^ inputType.hashCode ^ value.hashCode ^ itemUid.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -44,11 +47,12 @@ class ItemData {
         index == other.index &&
         name == other.name &&
         inputType == other.inputType &&
-        value == other.value;
+        value == other.value &&
+        itemUid == other.itemUid;
 
   @override
   String toString() {
-    return 'ItemData { id: $id, uid: $uid, index: $index, name: $name, inputType: $inputType, value: $value }';
+    return 'ItemData { id: $id, uid: $uid, index: $index, name: $name, inputType: $inputType, value: $value, itemUid: $itemUid }';
   }
 
   ItemDataEntity toEntity() {
@@ -69,6 +73,18 @@ class ItemData {
       name: entity.name,
       inputType: entity.inputType,
       value: entity.value
+    );
+  }
+
+  static ItemData fromEntitywithItemUid(ItemDataEntity entity, String itemUid) {
+    return ItemData(
+        id: entity.id,
+        uid: entity.uid,
+        index: entity.index,
+        name: entity.name,
+        inputType: entity.inputType,
+        value: entity.value,
+        itemUid: itemUid,
     );
   }
 }

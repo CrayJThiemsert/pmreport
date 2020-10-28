@@ -105,11 +105,13 @@ class FirebaseItemDatasRepository implements ItemDatasRepository {
   @override
   Stream<List<ItemData>> itemDatasStream(String categoryUid, String partUid, Topic topic, Item item) {
     String query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
+    print('@@@@ itemDatasStream - partUid=${partUid} - item.uid[${item.uid}]');
+    print('query=${query}');
     final itemsLoadCollection = FirebaseFirestore.instance.collection(query).orderBy('index', descending: false);
 
     return itemsLoadCollection.snapshots().map((snapshot) {
       return snapshot.docs
-          .map((doc) => ItemData.fromEntity(ItemDataEntity.fromSnapshot(doc)))
+          .map((doc) => ItemData.fromEntitywithItemUid(ItemDataEntity.fromSnapshot(doc), item.uid))
           .toList();
     });
   }
@@ -117,11 +119,11 @@ class FirebaseItemDatasRepository implements ItemDatasRepository {
   @override
   Stream<ItemData> getItemDataStream(String categoryUid, String partUid, Topic topic, Item item, String itemDataUid) {
     String query = '/sites/nachuak_solar_power_plant/measurements/2020/categories/${categoryUid}/parts/${partUid}/topics/${topic.uid}/items_list/${item.uid}/items_data';
+    print('itemDataUid=${itemDataUid}');
+    print('query=${query}');
 
     final doc = FirebaseFirestore.instance.collection(query).doc(itemDataUid);
     return doc.snapshots().map((snapshot) {
-      print('itemDataUid=${itemDataUid}');
-      print('query=${query}');
       print('snapshot.exists=${snapshot.exists}');
       return ItemData.fromEntity(ItemDataEntity.fromSnapshot(snapshot));
     });
