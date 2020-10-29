@@ -8,6 +8,7 @@ import 'package:pmreport/blocs/items/items_bloc.dart';
 import 'package:pmreport/blocs/parts/parts.dart';
 import 'package:pmreport/blocs/topics/topics_bloc.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
+import 'package:pmreport/ui/topic/widgets/dataitem_widget.dart';
 import 'package:pmreport/utils/dialog_widget.dart';
 import 'package:pmreport/utils/sizes_helpers.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
@@ -152,12 +153,6 @@ class _ItemsMenuState extends State<ItemsMenu> {
                 ),
               );
             } else {
-              // DialogUtils().showMessageDialog(
-              //   context,
-              //   'Message',
-              //   'Item data not found.',
-              //   'OK',
-              // );
               return AlertDialog(
                 title: new Text("Message - [${topic.platform}]"),
                 content: new Text("Item data not found."),
@@ -172,9 +167,6 @@ class _ItemsMenuState extends State<ItemsMenu> {
                 ],
               );
 
-              // return Container(
-              //   child: Text('Item data not found'),
-              // );
             }
           }
         },
@@ -193,7 +185,7 @@ class _ItemsMenuState extends State<ItemsMenu> {
     );
     for(int i=2;i<item.headers.length;i++){
       // call a ItemData load stream
-      context.bloc<ItemDatasBloc>().add(LoadItemData(categoryUid, partUid, topicUid, topic, item, item.headers[i].uid));
+      // context.bloc<ItemDatasBloc>().add(LoadItemData(categoryUid, partUid, topicUid, topic, item, item.headers[i].uid));
       switch(i % 2) {
         case 0: { // left
           print('left[${i}] ${item.headers[i].uid}');
@@ -215,14 +207,6 @@ class _ItemsMenuState extends State<ItemsMenu> {
     }
 
     return widgets;
-    // return Row(
-    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //   crossAxisAlignment: CrossAxisAlignment.center,
-    //   children: [
-
-        // }
-    //   ],
-    // );
   }
 
   ItemData getItemData(Header header, Item item) {
@@ -246,133 +230,17 @@ class _ItemsMenuState extends State<ItemsMenu> {
     ItemData itemData = getItemData(item.headers[i], item);
     print('<<<header[${item.headers[i].uid} -> From Item Bloc list${itemData}>>> item no.${item.index} [${item.uid}] ');
 
-    ItemData itemDataStream = ItemData(uid: itemData.uid);
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: Bounce(
-          duration: Duration(milliseconds: 100),
-          child: Container(
-            height: displayHeight(context) * 0.07,
-            width: displayWidth(context) * 0.45,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.amber[800],
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.amber[800], Colors.amber[50]]
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text('${item.headers[i].name}',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal
-                  ),
-                ),
-                BlocBuilder<ItemDatasBloc, ItemDatasState>(
-                  // buildWhen: (previous, current) {
-                  //   print('*previous.itemDataUid[${previous.itemDataUid}] - current.itemDataUid[${current.itemDataUid}]');
-                  //   (previous.itemDataUid != current.itemDataUid);
-                  //   if(previous is ItemDataLoaded && current is ItemDataLoaded) {
-                  //     return (previous.itemData != current.itemData);
-                  //   } else {
-                  //     return false;
-                  //   }
-                  //   },
-                  builder: (context, state) {
-                    if (state is ItemDatasLoading) {
-                      print('ItemDatasLoading...');
-                      return LoadingIndicator();
-                    } else if(state is ItemDatasNotLoaded) {
-                      print('ItemDatasNotLoaded...');
-                      return Text(
-                        'Data not found',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    } else if(state is ItemDataLoaded) {
-                      print('ItemDataLoaded...');
-                    // } else if(state is ItemDatasLoaded) {
-                    //   print('ItemDatasLoaded...');
-                    //   print('#### item.uid[${item.uid}]=> i[${i}] ${item.headers[i].uid}  - state.itemDatas.length[${state.itemDatas.length}]');
-                    //   itemDataStream = getItemDataByUid(item.uid, item.headers[i].uid, state.itemDatas);
-                      print('#### item.uid[${item.uid}]=> i[${i}] ${item.headers[i].uid}  - state.itemDatas[${state.itemData}]');
-                      itemDataStream = state.itemData;
-                      print('>>>itemDataStream=${itemDataStream}');
-                      String value = '';
-                      // if(itemDataStream.id == null) {
-                      //   value = 'ld-${itemData.value}';
-                      // } else {
-                      //   value = 'st-${itemDataStream.value}';
-                      // }
-                      if(item.headers[i].uid == itemDataStream.uid) {
-                        value = 'st-${itemDataStream.value}';
-                      }
-
-                      return Text(
-                        '${value}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    }
-                  }
-                ),
-              ],
-            ),
-          ),
-          onPressed: () {
-            print('hit ${itemDataStream.uid}!!');
-            String value = '';
-            if(item.headers[i].uid == itemDataStream.uid) {
-              value = 'st-${itemDataStream.value}';
-            }
-
-            // BlocBuilder<ItemDatasBloc, ItemDatasState>(
-            //     builder: (context, state) {
-            //       if (state is ItemDatasLoading) {
-            //         print('ItemDatasLoading...');
-            //         DialogUtils().showMessageDialog(
-            //           context,
-            //           'Message',
-            //           'Loading data, please try again. ',
-            //           'OK',
-            //         );
-            //       } else if(state is ItemDatasNotLoaded) {
-            //         print('ItemDatasNotLoaded...');
-            //         DialogUtils().showMessageDialog(
-            //           context,
-            //           'Message',
-            //           'Data not found.',
-            //           'OK',
-            //         );
-            //       } else if(state is ItemDataLoaded) {
-                    print('onpressed >>>itemDataStream.uid=${itemDataStream.uid}');
-                    DialogUtils().showInputDialog(
-                      context: context,
-                      title: 'Input ${item.headers[i].name} Data',
-                      yesText: 'Save',
-                      noText: 'Cancel',
-                      inputType: item.headers[i].inputType,
-                      key: itemDataStream.uid,
-                      content: value,
-                      item: item,
-                      itemData: itemDataStream,
-                      itemDatasBloc: itemDatasBloc,
-                    );
-                //   }
-                // }
-            // );
-
-          },
-        ),
+      child: DataItemWidget(
+        categoryUid: categoryUid,
+        partUid: partUid,
+        topicUid: topicUid,
+        topic: topic,
+        item: item,
+        header: item.headers[i],
+        itemDatasBloc: itemDatasBloc,
+      ),
     );
   }
 

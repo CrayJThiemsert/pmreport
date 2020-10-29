@@ -201,7 +201,6 @@ class _InputTypeFormState extends State<InputTypeForm>
           shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.white, width: 1)),
           onPressed: () => doFunctionWithValue(_value, chipsIsSelectedList),
-          // onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
           child: Text(
             yesText,
             style: TextStyle(
@@ -263,7 +262,6 @@ class _InputTypeFormState extends State<InputTypeForm>
     print('itemData.inputType: ${itemData.inputType}');
     print('chipsIsSelectedList: ${chipsIsSelectedList} = ${chipsIsSelectedList.toString()}');
 
-
     switch (itemData.inputType) {
       case 'integer':
       case 'decimal':
@@ -309,33 +307,8 @@ class _InputTypeFormState extends State<InputTypeForm>
             itemData),
       );
 
-    // BlocProvider<ItemsBloc>(
-    //   create: (context) {
-    //     print('************ call load items 2 ***********');
-    //     return ItemsBloc(
-    //       itemsRepository: FirebaseItemsRepository(),
-    //     )..add(LoadItems(item.topic.part.category.uid, item.topic.part.uid, item.topic.uid, item.topic));
-    //     // ..add(LoadTemplateItems(categoryUid, partUid, topicUid, topic));
-    //   },
-    // );
-    // }
-
-
-    // BlocProvider<ItemDatasBloc>(
-    //   create: (context) {
-    //     return ItemDatasBloc(
-    //       itemDatasRepository: FirebaseItemDatasRepository(),
-    //     )..add(AddItemData(item.topic.part.category.uid,
-    //         item.topic.part.uid,
-    //         item.topic.uid,
-    //         item.topic,
-    //         item,
-    //         itemData));
-    //   },
-    // );
-
-
-
-    Navigator.of(context, rootNavigator: true).pop(false);
+    // Navigator.of(context, rootNavigator: true).pop(false);
+    print('hey pop true!!!');
+    Navigator.of(context, rootNavigator: true).pop(true);
   }
 }
