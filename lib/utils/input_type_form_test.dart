@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pmreport/blocs/itemdatas/itemdatas_bloc.dart';
-import 'package:pmreport/blocs/items/items.dart';
 import 'package:pmreport/ui/home/widgets/loading_indicator.dart';
 
 
@@ -10,7 +9,7 @@ import 'package:pmreport/utils/dialog_widget.dart';
 import 'package:preventive_maintenance_repository/preventive_maintenance_repository.dart';
 
 
-class InputTypeForm extends StatefulWidget {
+class InputTypeFormTest extends StatefulWidget {
   String uid;
   String yesFunc;
   String yesText;
@@ -21,16 +20,16 @@ class InputTypeForm extends StatefulWidget {
   ItemData itemData;
   ItemDatasBloc itemDatasBloc;
 
-  InputTypeForm(
+  InputTypeFormTest(
       {Key key, this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item, this.itemData, this.itemDatasBloc})
       : super(key: key);
 
   @override
-  _InputTypeFormState createState() => _InputTypeFormState(
+  _InputTypeFormTestState createState() => _InputTypeFormTestState(
       this.uid, this.yesFunc, this.yesText, this.noText, this.inputType, this.value, this.item, this.itemData, this.itemDatasBloc);
 }
 
-class _InputTypeFormState extends State<InputTypeForm>
+class _InputTypeFormTestState extends State<InputTypeFormTest>
     with TickerProviderStateMixin {
   String uid;
   String yesFunc;
@@ -42,7 +41,7 @@ class _InputTypeFormState extends State<InputTypeForm>
   ItemData itemData;
   ItemDatasBloc itemDatasBloc;
 
-  _InputTypeFormState(
+  _InputTypeFormTestState(
       String uid, String yesFunc, String yesText, String noText, String inputType, String value, Item item, ItemData itemData, ItemDatasBloc itemDatasBloc)
       : this.uid = uid == 'n/a' ? '' : uid,
         this.yesFunc = yesFunc,
@@ -57,7 +56,6 @@ class _InputTypeFormState extends State<InputTypeForm>
   bool isSelected = false;
   List<String> chipsList = List<String>();
   List<bool> chipsIsSelectedList = List<bool>();
-  // List<Widget> _widgets = List<Widget>();
 
   @override
   List<Object> get props => [chipsIsSelectedList, _value];
@@ -113,45 +111,9 @@ class _InputTypeFormState extends State<InputTypeForm>
 
     print('uid[${uid}] - chipsList.length[${chipsList.length}]');
 
-    // Init default value
     for (int i = 0; i < chipsList.length; i++) {
-      print('initial add false to chipsIsSelectedList no. ${chipsIsSelectedList.length}');
+      print('add false to chipsIsSelectedList no. ${chipsIsSelectedList.length}');
       chipsIsSelectedList.add(false);
-    }
-
-    // assign options values from database
-    switch(inputType) {
-      case 'single_options_ok':
-      case 'single_options_testing':
-      case 'multiple_options_condition':
-      case 'multiple_options_lightning_arrester':
-      case 'multiple_options_drop_fuse_cut_out':
-      case 'multiple_options_connection':
-      case 'multiple_options_ground':
-        {
-          if(_value == null) {
-            _value = '';
-          }
-
-          final valueList = _value.split(',');
-          print('valueList[${valueList}]');
-
-          if (valueList.length == chipsIsSelectedList.length) {
-            for (int i = 0; i < chipsList.length; i++) {
-              bool dbValue = false;
-              print('valueList[$i]=${valueList[i]}');
-              if (valueList[i].trim() == 'true') {
-                dbValue = true;
-              }
-              print(
-                  'set database value[${dbValue}] to chipsIsSelectedList no.[${i}] existing=${chipsIsSelectedList[i]}');
-              chipsIsSelectedList[i] = dbValue;
-            }
-          }
-
-
-          break;
-        }
     }
   }
 
@@ -162,8 +124,8 @@ class _InputTypeFormState extends State<InputTypeForm>
     //   width: 30,
     // );
     print('Building input form===');
-
     List<Widget> _widgets = List<Widget>();
+
 
     switch (inputType) {
       case 'integer':
@@ -205,27 +167,14 @@ class _InputTypeFormState extends State<InputTypeForm>
           ));
           break;
         }
-      case 'single_options_ok':
-      case 'single_options_testing':
-      case 'multiple_options_condition':
-      case 'multiple_options_lightning_arrester':
-      case 'multiple_options_drop_fuse_cut_out':
-      case 'multiple_options_connection':
-      case 'multiple_options_ground':
-        {
-          for (int i = 0; i < chipsList.length; i++) {
-            String chipName = chipsList[i];
-            _widgets.add(buildFilterChip(chipName: chipName, index: i));
-          }
-
-          break;
-        }
     }
 
-    // for (int i = 0; i < chipsList.length; i++) {
-    //   String chipName = chipsList[i];
-    //   _widgets.add(buildFilterChip(chipName: chipName, index: i));
-    // }
+    // print('uid[${uid}] - chipsList.length[${chipsList.length}]');
+
+    for (int i = 0; i < chipsList.length; i++) {
+      String chipName = chipsList[i];
+      _widgets.add(buildFilterChip(chipName: chipName, index: i));
+    }
 
     _widgets.add(Divider(
       color: Colors.white,
@@ -251,6 +200,7 @@ class _InputTypeFormState extends State<InputTypeForm>
           shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.white, width: 1)),
           onPressed: () => doFunctionWithValue(_value, chipsIsSelectedList),
+          // onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
           child: Text(
             yesText,
             style: TextStyle(
@@ -262,6 +212,12 @@ class _InputTypeFormState extends State<InputTypeForm>
       ],
     ));
 
+    // return BlocBuilder<ItemDatasBloc, ItemDatasState> (
+    //   builder: (context, state) {
+    //   if(state is ItemDatasLoading) {
+    //     return LoadingIndicator();
+    //   } else if(state is ItemDatasNotLoaded) {
+    //   } else {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -269,6 +225,19 @@ class _InputTypeFormState extends State<InputTypeForm>
         children: _widgets,
       ),
     );
+    // }
+    // },
+    // );
+    //   BlocProvider(
+    //   create: (BuildContext context) => ItemDatasBloc(itemDatasRepository: FirebaseItemDatasRepository()),
+    //   child: SingleChildScrollView(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       // crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: _widgets,
+    //     ),
+    //   ),
+    // );
   }
 
   FilterChip buildFilterChip({String chipName, int index}) {
@@ -278,22 +247,20 @@ class _InputTypeFormState extends State<InputTypeForm>
         selectedColor: Colors.lightGreen,
         // avatar: Text('W'),
         onSelected: (onSelected) {
-          print('chip selected=>index[${index}]');
           setState(() {
             chipsIsSelectedList[index] = !chipsIsSelectedList[index];
-          //   print('**tap to chipsIsSelectedList[$index][${chipsIsSelectedList[index]}]');
           });
         });
   }
 
   doFunctionWithValue(String value, List<bool> chipsIsSelectedList) {
-    print('call doFunctionWithValue ^^^');
     print('item: ${item}');
     print('itemData: ${itemData}');
     print('value: ${value}');
     print('itemData.inputType: ${itemData.inputType}');
     print('itemData.inputType: ${itemData.inputType}');
     print('chipsIsSelectedList: ${chipsIsSelectedList} = ${chipsIsSelectedList.toString()}');
+
 
     switch (itemData.inputType) {
       case 'integer':
@@ -331,17 +298,30 @@ class _InputTypeFormState extends State<InputTypeForm>
     // final itemDatasBloc = BlocProvider.of<ItemDatasBloc>(context);
     //
     // if(itemDatasBloc != null) {
-      itemDatasBloc.add(
-        AddItemData(item.topic.part.category.uid,
-            item.topic.part.uid,
-            item.topic.uid,
-            item.topic,
-            item,
-            itemData),
-      );
+    itemDatasBloc.add(
+      AddItemData(item.topic.part.category.uid,
+          item.topic.part.uid,
+          item.topic.uid,
+          item.topic,
+          item,
+          itemData),
+    );
+    // }
 
-    // Navigator.of(context, rootNavigator: true).pop(false);
-    print('hey pop true!!!');
-    Navigator.of(context, rootNavigator: true).pop(true);
+
+    // BlocProvider<ItemDatasBloc>(
+    //   create: (context) {
+    //     return ItemDatasBloc(
+    //       itemDatasRepository: FirebaseItemDatasRepository(),
+    //     )..add(AddItemData(item.topic.part.category.uid,
+    //         item.topic.part.uid,
+    //         item.topic.uid,
+    //         item.topic,
+    //         item,
+    //         itemData));
+    //   },
+    // );
+
+    Navigator.of(context, rootNavigator: true).pop(false);
   }
 }

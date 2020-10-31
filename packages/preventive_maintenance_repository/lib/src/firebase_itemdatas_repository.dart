@@ -24,7 +24,7 @@ class FirebaseItemDatasRepository implements ItemDatasRepository {
     print('itemData[${itemData}]');
     final itemsDataLoadCollection = FirebaseFirestore.instance.collection(query);
     return itemsDataLoadCollection
-        .doc(itemData.id)
+        .doc(itemData.uid)
         .set(itemData.toEntity().toDocument(), SetOptions(merge: true))
         .then((value) => _added = true);
     // return itemsDataLoadCollection.add(itemData.toEntity().toDocument());
